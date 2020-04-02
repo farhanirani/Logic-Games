@@ -6,40 +6,42 @@ walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.ima
 bg = pygame.image.load('bg.jpg')
 char = pygame.image.load('standing.png')
 
+#*****
 win = pygame.display.set_mode((500,480))
 pygame.display.set_caption("first game")
 
 clock = pygame.time.Clock()
 
-x=50
-y=400
-width = 64
-height = 64
-vel = 8
-left = False
-right = False
-walkcount = 0
 
+class player(object):
+    def __init__(self,x,y,width,height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.vel = 5
+        self.isJump = False
+        self.left = False
+        self.right = False
+        self.walkCount = 0
+        self.jumpCount = 10
 
-isJump = False
-jumpCount = 10
+    def draw(self, win):
+        if self.walkCount + 1 >= 27:
+            self.walkCount = 0
+
+        if self.left:
+            win.blit(walkLeft[self.walkCount//3], (self.x,self.y))
+            self.walkCount += 1
+        elif self.right:
+            win.blit(walkRight[self.walkCount//3], (self.x,self.y))
+            self.walkCount +=1
+        else:
+            win.blit(char, (self.x,self.y))
 
 def redrawWindow():
-    global walkcount
     win.blit(bg,(0,0))
-    
-    if walkcount + 1 >= 27:
-        walkcount = 0
-    
-    if left:
-        win.blit(walkLeft[walkcount//3], (x,y))
-        walkcount += 1
-    elif right:
-        win.blit(walkRight[walkcount//3], (x,y))
-        walkcount += 1
-    else:
-        win.blit(char, (x,y))
-        
+    man.draw(win)
     pygame.display.update()
 
 run = True
