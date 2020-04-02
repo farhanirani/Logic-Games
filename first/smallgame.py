@@ -1,21 +1,21 @@
 import pygame
-pygame.init()
+pygame.init()  
 
 walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
 walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
 bg = pygame.image.load('bg.jpg')
 char = pygame.image.load('standing.png')
 
-win = pygame.display.set_mode((500,500))
+win = pygame.display.set_mode((500,480))
 pygame.display.set_caption("first game")
 
 clock = pygame.time.Clock()
 
 x=50
-y=425
+y=400
 width = 64
 height = 64
-vel = 5
+vel = 8
 left = False
 right = False
 walkcount = 0
@@ -44,7 +44,7 @@ def redrawWindow():
 
 run = True
 while run:
-    clock.tick(27)
+    clock.tick(30)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
