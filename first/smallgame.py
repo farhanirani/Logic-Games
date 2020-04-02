@@ -39,49 +39,51 @@ class player(object):
         else:
             win.blit(char, (self.x,self.y))
 
-def redrawWindow():
+def redrawGameWindow():
     win.blit(bg,(0,0))
     man.draw(win)
     pygame.display.update()
-
+man = player(200, 410, 64,64)
 run = True
 while run:
-    clock.tick(30)
+    clock.tick(27)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-    
+
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_LEFT] and  x > 0:
-        x -= vel
-        left = True
-        right = False
-    elif keys[pygame.K_RIGHT] and x + width + vel <= 500:
-        x += vel
-        left = False
-        right = True
+    if keys[pygame.K_LEFT] and man.x > man.vel:
+        man.x -= man.vel
+        man.left = True
+        man.right = False
+    elif keys[pygame.K_RIGHT] and man.x < 500 - man.width - man.vel:
+        man.x += man.vel
+        man.right = True
+        man.left = False
     else:
-        left = False
-        right = False
-        walkcount = 0
-
-    if keys[pygame.K_SPACE]:
-        isJump = True
-        walkcount = 0
-    if isJump:
-        if jumpCount >= -10:
+        man.right = False
+        man.left = False
+        man.walkCount = 0
+        
+    if not(man.isJump):
+        if keys[pygame.K_SPACE]:
+            man.isJump = True
+            man.right = False
+            man.left = False
+            man.walkCount = 0
+    else:
+        if man.jumpCount >= -10:
             neg = 1
-            if jumpCount < 0:
+            if man.jumpCount < 0:
                 neg = -1
-            y -= (jumpCount ** 2) * 0.5 * neg
-            jumpCount -= 1
+            man.y -= (man.jumpCount ** 2) * 0.5 * neg
+            man.jumpCount -= 1
         else:
-            jumpCount = 10
-            isJump = False
+            man.isJump = False
+            man.jumpCount = 10
+            
+    redrawGameWindow()
 
-    redrawWindow()
-    
-
-pygame.quit
+pygame.quit()
