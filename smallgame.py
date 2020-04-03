@@ -9,8 +9,8 @@ gwalkLeft = [pygame.image.load('L%sE.png' % frame) for frame in range(1, 12)]
 bg = pygame.image.load('bg.jpg')
 char = pygame.image.load('standing.png')
 
-# bulletSound = pygame.mixer.Sound("bullet.wav")
-# hitSound = pygame.mixer.Sound("hit.wav")
+bulletSound = pygame.mixer.Sound("bullet.wav")
+hitSound = pygame.mixer.Sound("hit.wav")
 
 pygame.mixer.music.load("bgsound.mp3")
 pygame.mixer.music.play(-1)
@@ -57,6 +57,23 @@ class player():
                 win.blit(walkLeft[0], (self.x,self.y))
         self.hitbox = (self.x + 17, self.y + 11, 29, 52)
         #pygame.draw.rect(win, (255,0,0), self.hitbox, 2)
+    
+    def hit(self):
+        self.x = 60 # We are resetting the player position
+        self.y = 410
+        self.walkCount = 0
+        font1 = pygame.font.SysFont('comicsans', 100)
+        text = font1.render('-5', 1, (255,0,0))
+        win.blit(text, (250 - (text.get_width()/2),200))
+        pygame.display.update()
+        i = 0
+        while i < 300:
+            pygame.time.delay(10)
+            i += 1
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    i = 301
+                    pygame.quit()
 
 
 class projectile():
@@ -146,6 +163,11 @@ run = True
 while run:
     clock.tick(27)
 
+    if man.hitbox[1] < goblin.hitbox[1] + goblin.hitbox[3] and man.hitbox[1] + man.hitbox[3] > goblin.hitbox[1]:
+        if man.hitbox[0] + man.hitbox[2] > goblin.hitbox[0] and man.hitbox[0] < goblin.hitbox[0] + goblin.hitbox[2]:
+            man.hit()
+            score -= 5
+
     if shootloop > 0:
         shootloop += 1
     if shootloop > 3:
@@ -157,7 +179,7 @@ while run:
     for bullet in bullets:
         if bullet.y - bullet.radius < goblin.hitbox[1] + goblin.hitbox[3] and bullet.y + bullet.radius > goblin.hitbox[1]:
             if bullet.x + bullet.radius > goblin.hitbox[0] and bullet.x - bullet.radius < goblin.hitbox[0] + goblin.hitbox[2]:
-                # hitSound.play()
+                hitSound.play()
                 goblin.hit()
                 score += 1
                 del bullets[bullets.index(bullet)]
@@ -170,7 +192,7 @@ while run:
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_SPACE] and shootloop == 0:
-        # bulletSound.play()
+        bulletSound.play()
         if man.left:
             facing = -1
         else:
