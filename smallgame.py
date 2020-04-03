@@ -2,8 +2,10 @@ import pygame,os
 os.chdir('first')
 pygame.init()  
 
-walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
-walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
+walkRight = [pygame.image.load('R%s.png' % frame) for frame in range(1, 10)]
+walkLeft = [pygame.image.load('L%s.png' % frame) for frame in range(1, 10)]
+gwalkRight = [pygame.image.load('R%sE.png' % frame) for frame in range(1, 12)]
+gwalkLeft = [pygame.image.load('L%sE.png' % frame) for frame in range(1, 12)]
 bg = pygame.image.load('bg.jpg')
 char = pygame.image.load('standing.png')
 
@@ -45,6 +47,7 @@ class player():
             else:
                 win.blit(walkLeft[0], (self.x,self.y))
 
+
 class projectile():
     def __init__(self,x,y,radius,color,facing):
         self.x = x
@@ -58,15 +61,58 @@ class projectile():
         pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
 
 
+class enemy():
+    def __init__(self,x,y,width,height,end):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.end = end
+        self.walkCount = 0
+        self.vel = 8
+        self.path = [self.x,self.end]
+
+    def draw(self,win):
+        self.move()
+        
+        if self.walkCount+1 > 33:
+            self.walkCount = 0
+        
+        if self.vel < 0:
+            win.blit(gwalkLeft[self.walkCount // 3], (self.x, self.y))
+            self.walkCount += 1
+        else:
+            win.blit(gwalkRight[self.walkCount // 3], (self.x, self.y))
+            self.walkCount += 1
+
+    def move(self):
+        if self.vel > 0:
+            if self.path[1] > self.vel + self.x:
+                self.x += self.vel
+                self.walkCount += 1
+            else:
+                self.vel *= -1
+                self.walkCount = 0
+        else:
+            if self.path[0] < self.x + self.vel:
+                self.x += self.vel
+                self.walkCount += 1
+            else:
+                self.vel *= -1
+                self.walkCount = 0
+
+
 def redrawGameWindow():
     win.blit(bg,(0,0))
+    goblin.draw(win)
     man.draw(win)
     for bullet in  bullets:
         bullet.draw(win)
     pygame.display.update()
 
 
-
+# main
+goblin = enemy(20,410,64,64,300)
 man = player(200, 410, 64,64)
 bullets = []
 run = True
