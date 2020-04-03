@@ -9,6 +9,12 @@ gwalkLeft = [pygame.image.load('L%sE.png' % frame) for frame in range(1, 12)]
 bg = pygame.image.load('bg.jpg')
 char = pygame.image.load('standing.png')
 
+# bulletSound = pygame.mixer.Sound("bullet.wav")
+# hitSound = pygame.mixer.Sound("hit.wav")
+
+pygame.mixer.music.load("bgsound.mp3")
+pygame.mixer.music.play(-1)
+
 #*****
 win = pygame.display.set_mode((500,480))
 pygame.display.set_caption("first game")
@@ -151,6 +157,7 @@ while run:
     for bullet in bullets:
         if bullet.y - bullet.radius < goblin.hitbox[1] + goblin.hitbox[3] and bullet.y + bullet.radius > goblin.hitbox[1]:
             if bullet.x + bullet.radius > goblin.hitbox[0] and bullet.x - bullet.radius < goblin.hitbox[0] + goblin.hitbox[2]:
+                # hitSound.play()
                 goblin.hit()
                 score += 1
                 del bullets[bullets.index(bullet)]
@@ -163,6 +170,7 @@ while run:
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_SPACE] and shootloop == 0:
+        # bulletSound.play()
         if man.left:
             facing = -1
         else:
