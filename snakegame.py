@@ -8,7 +8,7 @@ clock = pygame.time.Clock()
 snakeimg = pygame.image.load("snake.png")
 pygame.display.set_icon(snakeimg)
 
-13, 120, 13
+
 class snakehead:
     def __init__(self,x,y):
         self.x = x
@@ -29,20 +29,21 @@ class snakehead:
 
 
 class snakebody:
-    def __init__(self,x,y):
+    def __init__(self,x,y,direction):
         self.x = x
         self.y = y
+        self.direction = direction
     
     def draw(self):
-        if self.x < columns-1 and direction == 1:
+        if self.x < columns-1 and self.direction == 1:
             self.x += 1
-        elif self.y < rows-1 and direction == 2:
+        elif self.y < rows-1 and self.direction == 2:
             self.y += 1
-        elif self.x > 0 and direction == 3:
+        elif self.x > 0 and self.direction == 3:
             self.x -= 1
-        elif self.y > 0 and direction == 4:
+        elif self.y > 0 and self.direction == 4:
             self.y -= 1
-
+        pygame.draw.rect(win, (13, 120, 13), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
 
 
 
@@ -58,10 +59,20 @@ def redraw():
     win.fill((100,10,10))
     drawBoard()
     snake.draw()
+    previousdir = direction
+    for b in snakearray:
+        temp = int(previousdir)
+        b.direction = previousdir
+        b.draw()
+        previousdir = temp
     pygame.display.update()
 
 
 #main game
+snakearray = []
+snakearray.append(snakebody(9,10,1)) 
+snakearray.append(snakebody(8,10,1))
+previousdir = 1
 direction = 1
 snake = snakehead(10,10)
 rows = 20
