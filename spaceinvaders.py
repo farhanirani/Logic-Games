@@ -56,10 +56,50 @@ def redraw():
     pygame.display.update()
 
 
+def gameover():
+    font = pygame.font.SysFont('franklingothicheavy', 60)
+    text = font.render('GAME OVER ', 1, (0, 63, 252))
+    win.fill((9, 27, 61))
+    win.blit(text, (180,210))
+    pygame.display.update()
+    i = 0
+    while i < 200:
+        pygame.time.delay(10)
+        i += 1
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+    pygame.quit()
+
+def roundover():
+    global alienspeed
+    global roundno
+
+    font = pygame.font.SysFont('franklingothicheavy', 60)
+    text = font.render('ROUND '+ str(roundno), 1, (0, 63, 252))
+    win.fill((9, 27, 61))
+    win.blit(text, (180,210))
+    pygame.display.update()
+
+    alienspeed += 2
+    roundno += 1
+    i = 0
+    while i < 200:
+        pygame.time.delay(10)
+        i += 1
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                i = 301
+                pygame.quit()
+            
+    for i in range(8):
+        aliens.append( spaceship(500/8*(i+1)+15, 40, alienspeed, 500/8*(i+1)+15) )
+
+
+alienspeed = 10
+roundno = 1
 bullets = []
 aliens = []
-for i in range(8):
-    aliens.append( spaceship(500/8*(i+1)+15, 40, 3, 500/8*(i+1)+15) )
 player = shooter(280,420)
 bullettimer = 0
 
@@ -69,6 +109,11 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+
+    if len(aliens) == 0:
+        player.x = 280
+        bullets.clear()
+        roundover()
 
     if bullettimer > 0:
         bullettimer += 1
@@ -80,18 +125,30 @@ while run:
         if b.y > 0:
             b.y -= b.vel
         else:
-            del bullets[bullets.index(b)]
+            if bullets.count(b):
+                del bullets[bullets.index(b)]
 
     for a in aliens:
-        if a.x + a.vel > a.initx + 40 or a.x + a.vel < a.initx - 40:
+
+        if a.y + 40 > player.y and a.x > player.x and a.x < player.x + 32:
+            gameover()
+
+        if a.x + a.vel > 540:
             a.vel *= -1
+            a.y += 50
+            a.x = 540
+        elif a.x + a.vel < 30:
+            a.vel *= -1
+            a.y += 50
+            a.x = 500/8
         a.x += a.vel
 
     for b in bullets:
         for a in aliens:
             if b.y - 10 <= a.y:
                 if b.x + 12 > a.x and b.x + 4 < a.x + 32:
-                    del bullets[bullets.index(b)]
+                    if bullets.count(b):
+                        del bullets[bullets.index(b)]
                     del aliens[aliens.index(a)]
 
     keys = pygame.key.get_pressed()
