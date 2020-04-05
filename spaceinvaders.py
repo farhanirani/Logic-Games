@@ -54,8 +54,8 @@ class shooter:
 
 class bullet:
     def __init__(self,x,y):
-        self.x = x
-        self.y = y
+        self.x = x+8
+        self.y = y-6
         self.vel = 30
 
     def draw(self):
@@ -114,9 +114,9 @@ def roundover():
                 pygame.quit()
             
     for i in range(8):
-        aliens.append( spaceship2(500/8*(i+1)+5, 40, alienspeed, 500/8*(i+1)+5) )
-        aliens.append( spaceship(500/8*(i+1)+5, 80, alienspeed, 500/8*(i+1)+5) )
-        aliens.append( spaceship2(500/8*(i+1)+5, 120, alienspeed, 500/8*(i+1)+5) )
+        aliens.append( spaceship2(500/8*(i+1)+5, 30, alienspeed, 500/8*(i+1)+5) )
+        aliens.append( spaceship(500/8*(i+1)+5, 70, alienspeed, 500/8*(i+1)+5) )
+        aliens.append( spaceship2(500/8*(i+1)+5, 110, alienspeed, 500/8*(i+1)+5) )
 
 
 
@@ -132,7 +132,7 @@ bullettimer = 0
 
 run=True
 while run:
-    clock.tick(40)
+    clock.tick(60)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
