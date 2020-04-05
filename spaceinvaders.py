@@ -93,10 +93,11 @@ def roundover():
                 pygame.quit()
             
     for i in range(8):
-        aliens.append( spaceship(500/8*(i+1)+15, 40, alienspeed, 500/8*(i+1)+15) )
+        aliens.append( spaceship(500/8*(i+1)+10, 40, alienspeed, 500/8*(i+1)+10) )
 
-
-alienspeed = 3
+moveflag = False
+movedown = 0
+alienspeed = 2
 roundno = 1
 bullets = []
 aliens = []
@@ -129,19 +130,25 @@ while run:
                 del bullets[bullets.index(b)]
 
     for a in aliens:
-
         if a.y + 40 > player.y and a.x > player.x and a.x < player.x + 32:
             gameover()
 
-        if a.x + a.vel > 540:
+        if a.x + a.vel > a.initx + 40 or a.x + a.vel < a.initx - 40:
             a.vel *= -1
-            a.y += 50
-            a.x = 540
-        elif a.x + a.vel < 30:
-            a.vel *= -1
-            a.y += 50
-            a.x = 500/8
         a.x += a.vel
+
+    if a.x + a.vel > a.initx + 40 or a.x + a.vel < a.initx - 40:
+        moveflag = True
+    else:
+        moveflag = False
+    if moveflag:
+        movedown += 1
+        if movedown == 5:
+            moveflag = False
+            for a in aliens:
+                a.y += 50  
+            movedown = 0 
+            moveflag = False
 
     for b in bullets:
         for a in aliens:
