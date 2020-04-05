@@ -96,7 +96,7 @@ def roundover():
         aliens.append( spaceship(500/8*(i+1)+15, 40, alienspeed, 500/8*(i+1)+15) )
 
 
-alienspeed = 10
+alienspeed = 3
 roundno = 1
 bullets = []
 aliens = []
