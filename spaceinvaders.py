@@ -8,9 +8,11 @@ pygame.display.set_caption("Space Invaders")
 shooterimg = pygame.image.load("shooter.png")
 bulletimg = pygame.image.load("bullet.png")
 alienimg = pygame.image.load("alien1.png")
+alienimg2 = pygame.image.load("alien2.png")
 pygame.display.set_icon(shooterimg)
 
 clock = pygame.time.Clock()
+
 
 class spaceship:
     def __init__(self,x,y,vel,initx):
@@ -22,6 +24,19 @@ class spaceship:
     def draw(self):
         win.blit(alienimg, (self.x,self.y))
         # pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32),2)
+
+
+class spaceship2:
+    def __init__(self,x,y,vel,initx):
+        self.x = x
+        self.y = y
+        self.vel = vel
+        self.initx = initx
+
+    def draw(self):
+        win.blit(alienimg2, (self.x,self.y))
+        # pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32),2)
+
 
 class shooter:
     def __init__(self,x,y):
@@ -38,7 +53,7 @@ class bullet:
     def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.vel = 20
+        self.vel = 30
 
     def draw(self):
         win.blit(bulletimg , (self.x,self.y))
@@ -71,9 +86,12 @@ def gameover():
                 pygame.quit()
     pygame.quit()
 
+
 def roundover():
     global alienspeed
     global roundno
+    global bullettimertime
+    bullettimertime -= 1
 
     font = pygame.font.SysFont('franklingothicheavy', 60)
     text = font.render('ROUND '+ str(roundno), 1, (0, 63, 252))
@@ -81,7 +99,7 @@ def roundover():
     win.blit(text, (180,210))
     pygame.display.update()
 
-    alienspeed += 2
+    alienspeed += 1
     roundno += 1
     i = 0
     while i < 200:
@@ -93,11 +111,16 @@ def roundover():
                 pygame.quit()
             
     for i in range(8):
-        aliens.append( spaceship(500/8*(i+1)+10, 40, alienspeed, 500/8*(i+1)+10) )
+        aliens.append( spaceship2(500/8*(i+1)+5, 40, alienspeed, 500/8*(i+1)+5) )
+        aliens.append( spaceship(500/8*(i+1)+5, 80, alienspeed, 500/8*(i+1)+5) )
+        aliens.append( spaceship2(500/8*(i+1)+5, 120, alienspeed, 500/8*(i+1)+5) )
 
+
+
+bullettimertime = 12
 moveflag = False
 movedown = 0
-alienspeed = 2
+alienspeed = 1
 roundno = 1
 bullets = []
 aliens = []
@@ -118,7 +141,7 @@ while run:
 
     if bullettimer > 0:
         bullettimer += 1
-    if bullettimer > 8:
+    if bullettimer > bullettimertime:
         bullettimer = 0
 
     
@@ -130,7 +153,7 @@ while run:
                 del bullets[bullets.index(b)]
 
     for a in aliens:
-        if a.y + 40 > player.y and a.x > player.x and a.x < player.x + 32:
+        if a.y + 40 > player.y:
             gameover()
 
         if a.x + a.vel > a.initx + 40 or a.x + a.vel < a.initx - 40:
@@ -152,7 +175,7 @@ while run:
 
     for b in bullets:
         for a in aliens:
-            if b.y - 10 <= a.y:
+            if b.y - 10 <= a.y and b.y - 10 >= a.y - 32:
                 if b.x + 12 > a.x and b.x + 4 < a.x + 32:
                     if bullets.count(b):
                         del bullets[bullets.index(b)]
