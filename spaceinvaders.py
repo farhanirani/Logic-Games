@@ -60,7 +60,7 @@ def gameover():
     font = pygame.font.SysFont('franklingothicheavy', 60)
     text = font.render('GAME OVER ', 1, (0, 63, 252))
     win.fill((9, 27, 61))
-    win.blit(text, (180,210))
+    win.blit(text, (120,210))
     pygame.display.update()
     i = 0
     while i < 200:
