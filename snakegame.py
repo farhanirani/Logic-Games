@@ -15,6 +15,16 @@ class snakehead:
         self.y = y
 
     def draw(self):
+        if self.x < columns-1 and direction == 1:
+            self.x += 1
+        elif self.y < rows-1 and direction == 2:
+            self.y += 1
+        elif self.x > 0 and direction == 3:
+            self.x -= 1
+        elif self.y > 0 and direction == 4:
+            self.y -= 1
+        else:
+            pass
         pygame.draw.rect(win, (0,255,0), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
 
 
@@ -35,26 +45,33 @@ def redraw():
 
 
 #main game
+direction = 1
 snake = snakehead(10,10)
 rows = 20
 columns = 20
 run = True
 while run:
-    clock.tick(30)
+    clock.tick(40)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_LEFT] and snake.x > 0:
-        snake.x -= 1    
-    if keys[pygame.K_RIGHT] and snake.x < columns-1:
-        snake.x += 1
-    if keys[pygame.K_UP] and snake.y > 0:
-        snake.y -= 1
-    if keys[pygame.K_DOWN] and snake.y < rows-1:
-        snake.y += 1
+
+    # if delaycounter == 0:
+    if keys[pygame.K_LEFT] and direction != 3 and direction != 1:
+        direction = 3
+        # delaycounter = 1
+    if keys[pygame.K_RIGHT] and direction != 1 and direction != 3:
+        direction = 1
+        # delaycounter = 1
+    if keys[pygame.K_UP] and direction != 4 and direction != 2:
+        direction = 4
+        # delaycounter = 1
+    if keys[pygame.K_DOWN] and direction != 2 and direction != 4:
+        direction = 2
+        # delaycounter = 1
 
 
     redraw()
