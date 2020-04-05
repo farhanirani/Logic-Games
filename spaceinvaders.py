@@ -13,6 +13,8 @@ pygame.display.set_icon(shooterimg)
 
 clock = pygame.time.Clock()
 
+pygame.mixer.music.load("bgsong.mp3")
+pygame.mixer.music.play(-1)
 
 class spaceship:
     def __init__(self,x,y,vel,initx):
