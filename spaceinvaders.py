@@ -13,41 +13,43 @@ pygame.display.set_icon(shooterimg)
 clock = pygame.time.Clock()
 
 class spaceship:
-    def __init__(self,x,y,vel):
+    def __init__(self,x,y,vel,initx):
         self.x = x
         self.y = y
         self.vel = vel
+        self.initx = initx
 
     def draw(self):
         win.blit(alienimg, (self.x,self.y))
-        pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32),2)
+        # pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32),2)
 
 class shooter:
     def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.vel = 5
+        self.vel = 6
     
     def draw(self):
         win.blit(shooterimg, (self.x,self.y))
-        pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32),2)
+        # pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32),2)
 
 
 class bullet:
     def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.vel = 10
+        self.vel = 20
 
     def draw(self):
         win.blit(bulletimg , (self.x,self.y))
-        pygame.draw.rect(win, (255,0,0), (self.x+4,self.y,8,16),2)
+        # pygame.draw.rect(win, (255,0,0), (self.x+4,self.y,8,16),2)
 
 
 def redraw():
     win.fill((9, 27, 61))
     player.draw()
-    aliens.draw()
+    for a in aliens:
+        a.draw()
     for b in bullets:
         b.draw()
         
@@ -55,7 +57,9 @@ def redraw():
 
 
 bullets = []
-aliens = spaceship(50,40,3)
+aliens = []
+for i in range(8):
+    aliens.append( spaceship(500/8*(i+1)+15, 40, 3, 500/8*(i+1)+15) )
 player = shooter(280,420)
 bullettimer = 0
 
@@ -68,7 +72,7 @@ while run:
 
     if bullettimer > 0:
         bullettimer += 1
-    if bullettimer > 10:
+    if bullettimer > 8:
         bullettimer = 0
 
     
@@ -78,10 +82,17 @@ while run:
         else:
             del bullets[bullets.index(b)]
 
-    
-    if aliens.x + aliens.vel > 570 or aliens.x + aliens.vel < 0:
-        aliens.vel *= -1
-    aliens.x += aliens.vel
+    for a in aliens:
+        if a.x + a.vel > a.initx + 40 or a.x + a.vel < a.initx - 40:
+            a.vel *= -1
+        a.x += a.vel
+
+    for b in bullets:
+        for a in aliens:
+            if b.y - 10 <= a.y:
+                if b.x + 12 > a.x and b.x + 4 < a.x + 32:
+                    del bullets[bullets.index(b)]
+                    del aliens[aliens.index(a)]
 
     keys = pygame.key.get_pressed()
 
