@@ -1,8 +1,8 @@
-import pygame,os
+import pygame,os,random
 pygame.init()
 os.chdir("snakegamefiles")
 
-win = pygame.display.set_mode((500,500))
+win = pygame.display.set_mode((600,600))
 pygame.display.set_caption("snake(ie. neel) game")
 clock = pygame.time.Clock()
 snakeimg = pygame.image.load("snake.png")
@@ -24,8 +24,8 @@ class snakehead:
         elif self.y > 0 and gdirection == 4:
             self.y -= 1
         else:
-            pass
-        pygame.draw.rect(win, (0,255,0), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
+            gameover()
+        pygame.draw.rect(win, (13, 120, 13), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
 
 
 class snakebody:
@@ -44,9 +44,17 @@ class snakebody:
         elif self.y > 0 and self.direction == 4:
             self.y -= 1
         else:
-            pass
-        pygame.draw.rect(win, (13, 120, 13), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
+            gameover()
+        pygame.draw.rect(win, (0,0,0), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
 
+
+class foood:
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
+
+    def draw(self):
+        pygame.draw.rect(win, (255,0,0), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
 
 
 def drawBoard():
@@ -58,9 +66,26 @@ def drawBoard():
         pygame.draw.line(win, (110, 73, 13), (0, (i+1)*(500/rows)), (500, (i+1)*(500/rows)), 1)
 
 
+def gameover():
+    font = pygame.font.SysFont('franklingothicheavy', 60)
+    text = font.render('GAME OVER ', 1, (0, 63, 252))
+    win.blit(text, (100,210))
+    pygame.display.update()
+    i = 0
+    while i < 350:
+        pygame.time.delay(10)
+        i += 1
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+    pygame.quit()
+
+
+
 def redraw():
     win.fill((100,10,10))
     drawBoard()
+    food.draw()
     snake.draw()
 
     nextdirection = int(previousgdirection)
@@ -74,15 +99,15 @@ def redraw():
 
 #main game
 snakearray = []
-snakearray.append(snakebody(9,10,1)) 
-snakearray.append(snakebody(8,10,1))
-snakearray.append(snakebody(7,10,1))
+
 previousgdirection = 1
 gdirection = 1
 
-snake = snakehead(10,10)
+snake = snakehead(0,10)
 rows = 20
 columns = 20
+food = foood(random.randint(0, rows-1), random.randint(0, columns-1))
+
 run = True
 while run:
     clock.tick(10)
@@ -91,6 +116,23 @@ while run:
             run = False
 
     keys = pygame.key.get_pressed()
+
+    for s in snakearray:
+        if s.x == snake.x and s.y == snake.y:
+            gameover()
+
+    if snake.x == food.x and snake.y == food.y:
+        food.x = random.randint(0, rows-1)
+        food.y = random.randint(0, columns-1)
+        flag = True
+        while flag:
+            flag = False
+            for s in snakearray:
+                if s.x == food.x and s.y == food.y:
+                    flag = True
+                    food.x = random.randint(0, rows-1)
+                    food.y = random.randint(0, columns-1)
+                    break
 
     previousgdirection = int(gdirection)
     if keys[pygame.K_LEFT] and gdirection != 3 and gdirection != 1:
