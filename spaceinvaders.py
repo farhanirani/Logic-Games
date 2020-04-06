@@ -76,11 +76,11 @@ def redraw():
 
 def gameover():
     font = pygame.font.SysFont('franklingothicheavy', 60)
-    text = font.render('GAME OVER ', 1, (0, 63, 252))
+    text = font.render('GAME OVER '+str(roundno), 1, (0, 63, 252))
     win.blit(text, (120,210))
     pygame.display.update()
     i = 0
-    while i < 200:
+    while i < 400:
         pygame.time.delay(10)
         i += 1
         for event in pygame.event.get():
