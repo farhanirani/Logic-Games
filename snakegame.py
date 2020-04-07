@@ -111,12 +111,12 @@ rows = 20
 columns = 20
 food = foood(random.randint(0, rows-1), random.randint(0, columns-1))
 
-run = True
-while run:
+
+while True:
     clock.tick(6)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run = False
+            pygame.quit()
 
     keys = pygame.key.get_pressed()
 
