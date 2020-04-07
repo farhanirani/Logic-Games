@@ -113,7 +113,7 @@ food = foood(random.randint(0, rows-1), random.randint(0, columns-1))
 
 run = True
 while run:
-    clock.tick(10)
+    clock.tick(6)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
@@ -152,8 +152,6 @@ while run:
     if keys[pygame.K_DOWN] and gdirection != 2 and gdirection != 4:
         gdirection = 2
     
-    
-        
     redraw()
 
     if appendflag == 1:
