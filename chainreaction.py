@@ -1,9 +1,12 @@
-import pygame
+import pygame,os
+os.chdir("files/chainfiles")
 pygame.init()
 
 win = pygame.display.set_mode((600,700))
 pygame.display.set_caption("Chain Reaction")
 clock = pygame.time.Clock()
+pygame.mixer.music.load("walk.mp3")
+pygame.mixer.music.play(-1)
 
 #color 1 = red,   2 = blue  0 = default
 class ball:
@@ -31,6 +34,11 @@ class ball:
                 pygame.draw.rect(win, (190, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
             elif self.number == 4:
                 pygame.draw.rect(win, (255, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+
+            font = pygame.font.SysFont('franklingothicheavy', 15)
+            text = font.render(str(self.number), 1, (255,255,255))
+            win.blit(text, ((self.x)*(600/sizeofboard)+10, (self.y)*(600/sizeofboard)+10) )
+
             
         elif self.color == 2:
             if self.number == 1 and (self.x % (sizeofboard-1) == 0 and self.y % (sizeofboard-1) == 0):  #check 1 and corner
@@ -49,7 +57,10 @@ class ball:
                 pygame.draw.rect(win, (0, 0, 190), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
             elif self.number == 4:
                 pygame.draw.rect(win, (0, 0, 255), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
-            
+
+            font = pygame.font.SysFont('franklingothicheavy', 15)
+            text = font.render(str(self.number), 1, (255,255,255))
+            win.blit(text, ((self.x)*(600/sizeofboard)+10, (self.y)*(600/sizeofboard)+10) )
 
 #-------------------------------------
 def beamsurroundingslots(x,y,playernumber):
@@ -68,7 +79,7 @@ def beamsurroundingslots(x,y,playernumber):
 
 def beam(x,y,playernumber):
     redraw()
-    pygame.time.delay(200)
+    pygame.time.delay(80)
     if x % (sizeofboard-1) == 0 and y % (sizeofboard-1) == 0:   #corner max 1 then burst
         if board[x][y].number < 1:
             board[x][y].color = playernumber
@@ -120,7 +131,7 @@ def decoration():
             p[board[i][j].color] += 1
     if p[1] == 0 and playernumber > 3:
         text = font.render('Player 2 WINS!!!! ', 1, (0,0,255))
-        win.blit(text, (170,620))
+        win.blit(text, (170,100))
         pygame.display.update()
         delayy()
     elif p[2] == 0 and playernumber > 3:
