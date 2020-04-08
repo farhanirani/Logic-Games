@@ -1,5 +1,5 @@
 import pygame,os
-os.chdir("spaceinvadersfiles")
+os.chdir("files/spaceinvadersfiles")
 pygame.init()
 
 win = pygame.display.set_mode((600,500))

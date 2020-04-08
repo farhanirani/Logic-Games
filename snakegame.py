@@ -1,6 +1,6 @@
 import pygame,os,random
 pygame.init()
-os.chdir("snakegamefiles")
+os.chdir("files/snakegamefiles")
 
 win = pygame.display.set_mode((500,500))
 pygame.display.set_caption("snake(ie. neel) game")
