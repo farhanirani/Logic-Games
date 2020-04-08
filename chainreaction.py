@@ -131,12 +131,12 @@ def decoration():
             p[board[i][j].color] += 1
     if p[1] == 0 and playernumber > 3:
         text = font.render('Player 2 WINS!!!! ', 1, (0,0,255))
-        win.blit(text, (170,100))
+        win.blit(text, (170,620))
         pygame.display.update()
         delayy()
     elif p[2] == 0 and playernumber > 3:
         text = font.render('Player 1 WINS!!! ', 1, (255,0,0))
-        win.blit(text, (170,100))
+        win.blit(text, (170,620))
         pygame.display.update()
         delayy()
     else:
@@ -155,7 +155,9 @@ def delayy():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+    pygame.quit()
 
+    
 # main game
 
 sizeofboard = 12
