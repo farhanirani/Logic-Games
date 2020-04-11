@@ -20,10 +20,16 @@ class ball:
     y = 500
     
     def draw(self):
-        if left and self.x - vel > 50:
-            self.x -= vel
-        elif right and self.x + vel + 32 < 750:
-            self.x += vel
+        if left:
+            if self.x - vel > 40:
+                self.x -= vel
+            else:
+                self.x = 750
+        elif right:
+            if self.x + vel + 32 < 765:
+                self.x += vel
+            else:
+                self.x = 50
 
         win.blit(ballimg,(self.x,self.y))
         # pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32), 1)
@@ -31,15 +37,15 @@ class ball:
 
 class basket:
     x = 42
-    y = random.randint(50,480)
+    y = random.randint(100,420)
     def draw(self):
         if left:
-            self.x = 42
+            self.x = 80
             win.blit(leftb,(self.x,self.y))
         elif right:
-            self.x = 704
+            self.x = 640
             win.blit(rightb,(self.x,self.y))
-        # pygame.draw.rect(win, (255,0,0), (self.x,self.y+20,64,20), 1)
+        pygame.draw.rect(win, (255,0,0), (self.x,self.y+40,128,20), 1)
 
 
 def redraw():
@@ -52,6 +58,7 @@ def redraw():
 
 #main game
 
+neg = 1
 jumpcount = 10
 delayNum = 0
 bask = basket()
@@ -93,17 +100,17 @@ while run:
             bounce = 0
 
 
-    if b.x + 16 > bask.x and b.x + 16 < bask.x + 64 and  neg == -1:
+    if b.x + 16 > bask.x and b.x + 16 < bask.x + 128 and  neg == -1:
         if b.y + 32 > bask.y + 20 and b.y + 32 < bask.y + 80:
             if left:
                 left = False
                 right = True
-                bask.y = random.randint(50,480)
+                bask.y = random.randint(100,420)
             elif right:
                 left = True
                 right = False
-                bask.y = random.randint(50,480)
-            if vel < 6:
+                bask.y = random.randint(100,420)
+            if vel < 4:
                 vel += 1
 
     redraw()
