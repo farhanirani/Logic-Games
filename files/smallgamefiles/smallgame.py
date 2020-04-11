@@ -174,7 +174,7 @@ while run:
 
     if shootloop > 0:
         shootloop += 1
-    if shootloop > 3:
+    if shootloop > 2:
         shootloop = 0
 
     for event in pygame.event.get():
@@ -203,7 +203,7 @@ while run:
         else:
             facing = 1
 
-        if len(bullets) < 5:
+        if len(bullets) < 20:
             bullets.append(projectile(round(man.x + man.width//2), round(man.y + man.height//2), 6, (0,0,0), facing))
         shootloop = 1
 

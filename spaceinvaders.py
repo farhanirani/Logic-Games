@@ -80,7 +80,7 @@ def gameover():
     win.blit(text, (120,210))
     pygame.display.update()
     i = 0
-    while i < 400:
+    while i < 2000:
         pygame.time.delay(10)
         i += 1
         for event in pygame.event.get():
