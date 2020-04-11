@@ -18,17 +18,12 @@ clock = pygame.time.Clock()
 class ball:
     x = 200
     y = 500
-    vely = 0
+    
     def draw(self):
         if left and self.x - vel > 50:
             self.x -= vel
         elif right and self.x + vel + 32 < 750:
             self.x += vel
-
-        if self.vely > 0:
-            self.y += self.vely
-        if self.vely + self.y > 500:
-            self.vely = 0 
 
         win.blit(ballimg,(self.x,self.y))
         # pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32), 1)
@@ -68,7 +63,7 @@ bounce = 0
 
 run = True
 while run:
-    clock.tick(40)
+    clock.tick(60)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
@@ -86,22 +81,20 @@ while run:
         jumpcount = 10
 
     if bounce > 0:
-        if jumpcount >= -10:
-            b.vely = 0
+        if jumpcount >= -100:
             neg = 1
             if jumpcount < 0:
                 neg = -1
-
-            b.y -= (jumpcount ** 2) * 0.4 * neg
+            if b.y - (jumpcount ** 2) * 0.4 * neg < 550:
+                b.y -= (jumpcount ** 2) * 0.4 * neg
             jumpcount -= 1
         else:
             jumpcount = 10
             bounce = 0
-            b.vely = 25
 
 
-    if b.x + 16 > bask.x and b.x + 16 < bask.x + 64 and (b.vely > 0 or neg == -1):
-        if b.y + 32 > bask.y + 20 and b.y + 32 < bask.y + 60:
+    if b.x + 16 > bask.x and b.x + 16 < bask.x + 64 and  neg == -1:
+        if b.y + 32 > bask.y + 20 and b.y + 32 < bask.y + 80:
             if left:
                 left = False
                 right = True
@@ -110,7 +103,7 @@ while run:
                 left = True
                 right = False
                 bask.y = random.randint(50,480)
-            if vel < 20:
+            if vel < 6:
                 vel += 1
 
     redraw()
