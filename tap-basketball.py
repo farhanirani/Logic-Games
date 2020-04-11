@@ -45,19 +45,22 @@ class basket:
         elif right:
             self.x = 640
             win.blit(rightb,(self.x,self.y))
-        pygame.draw.rect(win, (255,0,0), (self.x,self.y+40,128,20), 1)
+        # pygame.draw.rect(win, (255,0,0), (self.x,self.y+40,128,40), 1)
 
 
 def redraw():
     win.fill((255, 123, 0))
     b.draw()
     bask.draw()
-
+    text = font.render('Score : '+ str(score), 1, (0,0,0))
+    win.blit(text, (320,10))
     pygame.display.update()
 
 
 #main game
 
+font = pygame.font.SysFont('comicsans', 30, True, True)
+score = 0
 neg = 1
 jumpcount = 10
 delayNum = 0
@@ -70,7 +73,7 @@ bounce = 0
 
 run = True
 while run:
-    clock.tick(60)
+    clock.tick(50)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
@@ -82,7 +85,7 @@ while run:
     if delayNum > 10:
         delayNum = 0
 
-    if keys[pygame.K_SPACE] and delayNum == 0:
+    if (keys[pygame.K_SPACE] or event.type == pygame.MOUSEBUTTONDOWN) and delayNum == 0:
         bounce = 1
         delayNum = 1
         jumpcount = 10
@@ -101,7 +104,7 @@ while run:
 
 
     if b.x + 16 > bask.x and b.x + 16 < bask.x + 128 and  neg == -1:
-        if b.y + 32 > bask.y + 20 and b.y + 32 < bask.y + 80:
+        if b.y + 32 > bask.y + 40 and b.y + 32 < bask.y + 100:
             if left:
                 left = False
                 right = True
@@ -112,6 +115,7 @@ while run:
                 bask.y = random.randint(100,420)
             if vel < 4:
                 vel += 1
+            score += 1
 
     redraw()
 
