@@ -80,7 +80,7 @@ def gameover():
     win.blit(text, (120,210))
     pygame.display.update()
     i = 0
-    while i < 2000:
+    while i < 200:
         pygame.time.delay(10)
         i += 1
         for event in pygame.event.get():
@@ -116,8 +116,9 @@ def roundover():
         aliens.append( spaceship(500/8*(i+1)+5, 70, alienspeed, 500/8*(i+1)+5) )
         aliens.append( spaceship2(500/8*(i+1)+5, 110, alienspeed, 500/8*(i+1)+5) )
 
+# main game
 
-
+countforincreasingplayerspeed=0
 bullettimertime = 12
 moveflag = False
 movedown = 0
@@ -138,6 +139,9 @@ while run:
     if len(aliens) == 0:
         player.x = 280
         bullets.clear()
+        countforincreasingplayerspeed += 1
+        if countforincreasingplayerspeed % 4 == 0:
+            player.vel += 2
         roundover()
 
     if bullettimer > 0:
@@ -189,7 +193,7 @@ while run:
     elif keys[pygame.K_RIGHT] and player.x + player.vel < 570:
         player.x += player.vel
 
-    if keys[pygame.K_SPACE] and bullettimer == 0:
+    if (keys[pygame.K_SPACE] or event.type == pygame.MOUSEBUTTONDOWN) and bullettimer == 0:
         bullets.append(bullet(player.x,player.y))
         bullettimer = 1
 
