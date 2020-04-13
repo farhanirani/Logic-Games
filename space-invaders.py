@@ -1,4 +1,4 @@
-import pygame, os, sys
+import pygame, os, sys, random
 os.chdir("files/spaceinvadersfiles")
 pygame.init()
 
@@ -70,6 +70,17 @@ def redraw():
         a.draw()
     for b in bullets:
         b.draw()
+
+    # explosion    
+    for particle in particles:
+        particle[0][0] += particle[1][0]
+        particle[0][1] += particle[1][1]
+        particle[2] -= 0.1
+        pygame.draw.circle(screen, (255,255,255), [ int(particle[0][0]), int(particle[0][1]) ], int(particle[2]))
+
+    for particle in particles:
+        if particle[2] <= 0:
+            particles.remove(particle)
         
     pygame.display.update()
 
@@ -129,6 +140,8 @@ aliens = []
 player = shooter(280,420)
 bullettimer = 0
 
+particles = []
+
 run=True
 while run:
     clock.tick(60)
@@ -184,7 +197,12 @@ while run:
                 if b.x + 12 > a.x and b.x + 4 < a.x + 32:
                     if bullets.count(b):
                         del bullets[bullets.index(b)]
+                    
+                    for _ in range(10):
+                        particles.append([ [a.x + 16, a.y + 16], [random.randint(0, 20) / 10 - 1, random.randint(0, 20) / 10 - 1], random.randint(4,8)])
+
                     del aliens[aliens.index(a)]
+
 
     keys = pygame.key.get_pressed()
 

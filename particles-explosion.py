@@ -16,14 +16,18 @@ while True:
     mx, my = pygame.mouse.get_pos()
     #                  spawn x,y                   speed x, speed y               life timer and radius                        
     
-    particles.append([ [mx, my], [random.randint(0, 20) / 10 - 1, -2], random.randint(4,8)])
-    # particles.append([ [mx, my], [random.randint(0, 20) / 10 - 1, random.randint(0, 20) / 10 - 1], random.randint(4,8)])
+    for _ in range(5):
+        # particles.append([ [mx, my], [random.randint(0, 20) / 10 - 1, -2], random.randint(4,8)])
+        particles.append([ [mx, my], [random.randint(0, 20) / 10 - 1, random.randint(0, 20) / 10 - 1], random.randint(4,8)])
 
     for particle in particles:
         particle[0][0] += particle[1][0]
         particle[0][1] += particle[1][1]
         particle[2] -= 0.1
-        # particle[1][1] += 0.1
+        
+        # gravity
+        particle[1][1] += 0.1
+        
         pygame.draw.circle(screen, (255,255,255), [ int(particle[0][0]), int(particle[0][1]) ], int(particle[2]))
 
     for particle in particles:
