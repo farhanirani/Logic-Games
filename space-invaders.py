@@ -76,7 +76,7 @@ def redraw():
         particle[0][0] += particle[1][0]
         particle[0][1] += particle[1][1]
         particle[2] -= 0.1
-        pygame.draw.circle(screen, (255,255,255), [ int(particle[0][0]), int(particle[0][1]) ], int(particle[2]))
+        pygame.draw.circle(screen, (0,200,0), [ int(particle[0][0]), int(particle[0][1]) ], int(particle[2]))
 
     for particle in particles:
         if particle[2] <= 0:
