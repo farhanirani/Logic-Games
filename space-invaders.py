@@ -25,7 +25,7 @@ class spaceship:
         self.initx = initx
 
     def draw(self):
-        screen.blit(alienimg, (self.x,self.y))
+        screen.blit(alienimg, (int(self.x), int(self.y)) )
         # pygame.draw.rect(screen, (255,0,0), (self.x,self.y,32,32),2)
 
 
@@ -37,7 +37,7 @@ class spaceship2:
         self.initx = initx
 
     def draw(self):
-        screen.blit(alienimg2, (self.x,self.y))
+        screen.blit(alienimg2, (int(self.x), int(self.y)) )
         # pygame.draw.rect(screen, (255,0,0), (self.x,self.y,32,32),2)
 
 
@@ -48,7 +48,7 @@ class shooter:
         self.vel = 6
     
     def draw(self):
-        screen.blit(shooterimg, (self.x,self.y))
+        screen.blit(shooterimg, (int(self.x), int(self.y)))
         # pygame.draw.rect(screen, (255,0,0), (self.x,self.y,32,32),2)
 
 
@@ -59,7 +59,7 @@ class bullet:
         self.vel = 30
 
     def draw(self):
-        screen.blit(bulletimg , (self.x,self.y))
+        screen.blit(bulletimg , (int(self.x), int(self.y)))
         # pygame.draw.rect(screen, (255,0,0), (self.x+4,self.y,8,16),2)
 
 

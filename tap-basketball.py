@@ -31,7 +31,7 @@ class ball:
             else:
                 self.x = 50
 
-        screen.blit(ballimg,(self.x,self.y))
+        screen.blit(ballimg,(int(self.x), int(self.y)))
         # pygame.draw.rect(screen, (255,0,0), (self.x,self.y,32,32), 1)
 
 
