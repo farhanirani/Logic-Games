@@ -2,7 +2,7 @@ import pygame,os,random
 pygame.init()
 os.chdir("files/snakegamefiles")
 
-win = pygame.display.set_mode((500,500))
+screen = pygame.display.set_mode((500,500))
 pygame.display.set_caption("snake(ie. neel) game")
 clock = pygame.time.Clock()
 snakeimg = pygame.image.load("snake.png")
@@ -25,7 +25,7 @@ class snakehead:
             self.y -= 1
         else:
             gameover()
-        pygame.draw.rect(win, (8, 115, 20), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
+        pygame.draw.rect(screen, (8, 115, 20), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
 
 
 class snakebody:
@@ -45,7 +45,7 @@ class snakebody:
             self.y -= 1
         else:
             gameover()
-        pygame.draw.rect(win, (0,0,0), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
+        pygame.draw.rect(screen, (0,0,0), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
 
 
 class foood:
@@ -54,22 +54,22 @@ class foood:
         self.y = y
 
     def draw(self):
-        pygame.draw.rect(win, (255,0,0), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
+        pygame.draw.rect(screen, (255,0,0), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
 
 
 def drawBoard():
     global rows
     global columns
     for i in range(rows):
-        pygame.draw.line(win, (110, 73, 13), ((i+1)*(500/rows), 0), ((i+1)*(500/rows), 500), 1)
+        pygame.draw.line(screen, (110, 73, 13), ((i+1)*(500/rows), 0), ((i+1)*(500/rows), 500), 1)
     for i in range(columns):
-        pygame.draw.line(win, (110, 73, 13), (0, (i+1)*(500/rows)), (500, (i+1)*(500/rows)), 1)
+        pygame.draw.line(screen, (110, 73, 13), (0, (i+1)*(500/rows)), (500, (i+1)*(500/rows)), 1)
 
 
 def gameover():
     font = pygame.font.SysFont('franklingothicheavy', 60)
     text = font.render('GAME OVER ', 1, (255,0,0))
-    win.blit(text, (100,210))
+    screen.blit(text, (100,210))
     pygame.display.update()
     i = 0
     while i < 350:
@@ -83,7 +83,7 @@ def gameover():
 
 
 def redraw():
-    win.fill((100,10,10))
+    screen.fill((100,10,10))
     drawBoard()
     food.draw()
     snake.draw()

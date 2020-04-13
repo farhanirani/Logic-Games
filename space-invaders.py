@@ -1,8 +1,8 @@
-import pygame,os
+import pygame, os, sys
 os.chdir("files/spaceinvadersfiles")
 pygame.init()
 
-win = pygame.display.set_mode((600,500))
+screen = pygame.display.set_mode((600,500))
 pygame.display.set_caption("Space Invaders")
 
 shooterimg = pygame.image.load("shooter.png")
@@ -25,8 +25,8 @@ class spaceship:
         self.initx = initx
 
     def draw(self):
-        win.blit(alienimg, (self.x,self.y))
-        # pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32),2)
+        screen.blit(alienimg, (self.x,self.y))
+        # pygame.draw.rect(screen, (255,0,0), (self.x,self.y,32,32),2)
 
 
 class spaceship2:
@@ -37,8 +37,8 @@ class spaceship2:
         self.initx = initx
 
     def draw(self):
-        win.blit(alienimg2, (self.x,self.y))
-        # pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32),2)
+        screen.blit(alienimg2, (self.x,self.y))
+        # pygame.draw.rect(screen, (255,0,0), (self.x,self.y,32,32),2)
 
 
 class shooter:
@@ -48,8 +48,8 @@ class shooter:
         self.vel = 6
     
     def draw(self):
-        win.blit(shooterimg, (self.x,self.y))
-        # pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32),2)
+        screen.blit(shooterimg, (self.x,self.y))
+        # pygame.draw.rect(screen, (255,0,0), (self.x,self.y,32,32),2)
 
 
 class bullet:
@@ -59,12 +59,12 @@ class bullet:
         self.vel = 30
 
     def draw(self):
-        win.blit(bulletimg , (self.x,self.y))
-        # pygame.draw.rect(win, (255,0,0), (self.x+4,self.y,8,16),2)
+        screen.blit(bulletimg , (self.x,self.y))
+        # pygame.draw.rect(screen, (255,0,0), (self.x+4,self.y,8,16),2)
 
 
 def redraw():
-    win.fill((9, 27, 61))
+    screen.fill((9, 27, 61))
     player.draw()
     for a in aliens:
         a.draw()
@@ -77,7 +77,7 @@ def redraw():
 def gameover():
     font = pygame.font.SysFont('franklingothicheavy', 60)
     text = font.render('GAME OVER '+str(roundno), 1, (0, 63, 252))
-    win.blit(text, (120,210))
+    screen.blit(text, (120,210))
     pygame.display.update()
     i = 0
     while i < 200:
@@ -97,7 +97,7 @@ def roundover():
 
     font = pygame.font.SysFont('franklingothicheavy', 60)
     text = font.render('ROUND '+ str(roundno), 1, (0, 63, 252))
-    win.blit(text, (180,210))
+    screen.blit(text, (180,210))
     pygame.display.update()
 
     alienspeed += 1

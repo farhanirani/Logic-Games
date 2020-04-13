@@ -2,7 +2,7 @@ import pygame,os
 os.chdir("files/chainfiles")
 pygame.init()
 
-win = pygame.display.set_mode((600,700))
+screen = pygame.display.set_mode((600,700))
 pygame.display.set_caption("Chain Reaction")
 clock = pygame.time.Clock()
 pygame.mixer.music.load("walk.mp3")
@@ -19,48 +19,48 @@ class ball:
     def draw(self):
         if self.color == 1:
             if self.number == 1 and (self.x % (sizeofboard-1) == 0 and self.y % (sizeofboard-1) == 0):  #check 1 and corner
-                pygame.draw.rect(win, (255, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (255, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
             elif self.number == 1 and (self.x % (sizeofboard-1) == 0 or self.y % (sizeofboard-1) == 0):  #check 1 and edge
-                pygame.draw.rect(win, (190, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (190, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
             elif self.number == 1:  #check 1 for full board
-                pygame.draw.rect(win, (50, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (50, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
 
             elif self.number == 2 and (self.x % (sizeofboard-1) == 0 or self.y % (sizeofboard-1) == 0):   #if 2 for edge
-                pygame.draw.rect(win, (255, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (255, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
             elif self.number == 2:  #2 for remaining board
-                pygame.draw.rect(win, (80, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (80, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
 
             elif self.number == 3:
-                pygame.draw.rect(win, (190, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (190, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
             elif self.number == 4:
-                pygame.draw.rect(win, (255, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (255, 0, 0), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
 
             font = pygame.font.SysFont('franklingothicheavy', 15)
             text = font.render(str(self.number), 1, (255,255,255))
-            win.blit(text, ((self.x)*(600/sizeofboard)+10, (self.y)*(600/sizeofboard)+10) )
+            screen.blit(text, ((self.x)*(600/sizeofboard)+10, (self.y)*(600/sizeofboard)+10) )
 
             
         elif self.color == 2:
             if self.number == 1 and (self.x % (sizeofboard-1) == 0 and self.y % (sizeofboard-1) == 0):  #check 1 and corner
-                pygame.draw.rect(win, (0, 0, 255), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (0, 0, 255), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
             elif self.number == 1 and (self.x % (sizeofboard-1) == 0 or self.y % (sizeofboard-1) == 0):  #check 1 and edge
-                pygame.draw.rect(win, (0, 0, 190), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (0, 0, 190), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
             elif self.number == 1:  #check 1 for full board
-                pygame.draw.rect(win, (0, 0, 50), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (0, 0, 50), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
 
             elif self.number == 2 and (self.x % (sizeofboard-1) == 0 or self.y % (sizeofboard-1) == 0):   #if 2 for edge
-                pygame.draw.rect(win, (0, 0, 255), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (0, 0, 255), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
             elif self.number == 2:  #2 for remaining board
-                pygame.draw.rect(win, (0, 0, 80), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (0, 0, 80), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
 
             elif self.number == 3:
-                pygame.draw.rect(win, (0, 0, 190), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (0, 0, 190), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
             elif self.number == 4:
-                pygame.draw.rect(win, (0, 0, 255), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
+                pygame.draw.rect(screen, (0, 0, 255), ( (self.x)*(600/sizeofboard), (self.y)*(600/sizeofboard), (600/sizeofboard), (600/sizeofboard) ) )
 
             font = pygame.font.SysFont('franklingothicheavy', 15)
             text = font.render(str(self.number), 1, (255,255,255))
-            win.blit(text, ((self.x)*(600/sizeofboard)+10, (self.y)*(600/sizeofboard)+10) )
+            screen.blit(text, ((self.x)*(600/sizeofboard)+10, (self.y)*(600/sizeofboard)+10) )
 
 #-------------------------------------
 def beamsurroundingslots(x,y,playernumber):
@@ -107,13 +107,13 @@ def beam(x,y,playernumber):
 def drawboard():
     global sizeofboard
     for i in range(sizeofboard):
-        pygame.draw.line(win, (40, 59, 4), ((i+1)*(600/sizeofboard), 0), ((i+1)*(600/sizeofboard), 600), 1)
+        pygame.draw.line(screen, (40, 59, 4), ((i+1)*(600/sizeofboard), 0), ((i+1)*(600/sizeofboard), 600), 1)
     for i in range(sizeofboard):
-        pygame.draw.line(win, (40, 59, 4), (0, (i+1)*(600/sizeofboard)), (600, (i+1)*(600/sizeofboard)), 1)
+        pygame.draw.line(screen, (40, 59, 4), (0, (i+1)*(600/sizeofboard)), (600, (i+1)*(600/sizeofboard)), 1)
 
 
 def redraw():
-    win.fill((87, 125, 16))
+    screen.fill((87, 125, 16))
     drawboard()
     for i in range(sizeofboard):
         for j in range(sizeofboard):
@@ -130,13 +130,13 @@ def decoration():
         for j in range(sizeofboard):
             p[board[i][j].color] += 1
     if p[1] == 0 and playernumber > 3:
-        text = font.render('Player 2 WINS!!!! ', 1, (0,0,255))
-        win.blit(text, (170,620))
+        text = font.render('Player 2 screenS!!!! ', 1, (0,0,255))
+        screen.blit(text, (170,620))
         pygame.display.update()
         delayy()
     elif p[2] == 0 and playernumber > 3:
-        text = font.render('Player 1 WINS!!! ', 1, (255,0,0))
-        win.blit(text, (170,620))
+        text = font.render('Player 1 screenS!!! ', 1, (255,0,0))
+        screen.blit(text, (170,620))
         pygame.display.update()
         delayy()
     else:
@@ -144,7 +144,7 @@ def decoration():
             text = font.render('Player 1 ', 1, (255,0,0))
         else:
             text = font.render('Player 2 ', 1, (0,0,255))
-    win.blit(text, (170,620))
+    screen.blit(text, (170,620))
     pygame.display.update()
 
 def delayy():

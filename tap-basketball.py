@@ -1,8 +1,8 @@
-import pygame,os,random
+import pygame, os, random
 os.chdir('files/tapballfiles')
 pygame.init()  
 
-win = pygame.display.set_mode((800,600))
+screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Tap BasketBall")
 ballimg = pygame.image.load("basketball.png")
 rightb = pygame.image.load('rightbasket.png')
@@ -31,8 +31,8 @@ class ball:
             else:
                 self.x = 50
 
-        win.blit(ballimg,(self.x,self.y))
-        # pygame.draw.rect(win, (255,0,0), (self.x,self.y,32,32), 1)
+        screen.blit(ballimg,(self.x,self.y))
+        # pygame.draw.rect(screen, (255,0,0), (self.x,self.y,32,32), 1)
 
 
 class basket:
@@ -41,19 +41,19 @@ class basket:
     def draw(self):
         if left:
             self.x = 80
-            win.blit(leftb,(self.x,self.y))
+            screen.blit(leftb,(self.x,self.y))
         elif right:
             self.x = 640
-            win.blit(rightb,(self.x,self.y))
-        # pygame.draw.rect(win, (255,0,0), (self.x,self.y+40,128,40), 1)
+            screen.blit(rightb,(self.x,self.y))
+        # pygame.draw.rect(screen, (255,0,0), (self.x,self.y+40,128,40), 1)
 
 
 def redraw():
-    win.fill((255, 123, 0))
+    screen.fill((255, 123, 0))
     b.draw()
     bask.draw()
     text = font.render('Score : '+ str(score), 1, (0,0,0))
-    win.blit(text, (320,10))
+    screen.blit(text, (320,10))
     pygame.display.update()
 
 
