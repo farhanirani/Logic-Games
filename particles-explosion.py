@@ -28,7 +28,7 @@ while True:
         # gravity
         particle[1][1] += 0.1
         
-        pygame.draw.circle(screen, (80,random.randint(1,80),random.randint(1,255)), [ int(particle[0][0]), int(particle[0][1]) ], int(particle[2]))
+        pygame.draw.circle(screen, (random.randint(1,255),0,0), [ int(particle[0][0]), int(particle[0][1]) ], int(particle[2]))
 
     for particle in particles:
         if particle[2] <= 0:
