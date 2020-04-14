@@ -9,6 +9,7 @@ shooterimg = pygame.image.load("shooter.png")
 bulletimg = pygame.image.load("bullet.png")
 alienimg = pygame.image.load("alien1.png")
 alienimg2 = pygame.image.load("alien2.png")
+heart = pygame.image.load("heart.png")
 pygame.display.set_icon(shooterimg)
 
 clock = pygame.time.Clock()
@@ -71,6 +72,14 @@ def redraw():
     for b in bullets:
         b.draw()
 
+    #lives
+    tempx = 570
+    tempy = 10
+    global lives
+    for i in range(lives):
+        screen.blit(heart, (tempx, tempy))
+        tempx -= 20 
+
     # explosion    
     for particle in particles:
         particle[0][0] += particle[1][0]
@@ -85,10 +94,27 @@ def redraw():
     pygame.display.update()
 
 
+def lifeHit():
+    global lives
+    global alienspeed
+    if lives > 1:
+        lives -= 1
+        aliens.clear()
+        for i in range(8):
+            aliens.append( spaceship2(500/8*(i+1)+5, 30, alienspeed, 500/8*(i+1)+5) )
+            aliens.append( spaceship(500/8*(i+1)+5, 70, alienspeed, 500/8*(i+1)+5) )
+            aliens.append( spaceship2(500/8*(i+1)+5, 110, alienspeed, 500/8*(i+1)+5) )
+        bullets.clear()
+    else:
+        gameover()
+
+
 def gameover():
-    font = pygame.font.SysFont('franklingothicheavy', 60)
-    text = font.render('GAME OVER '+str(roundno), 1, (0, 63, 252))
-    screen.blit(text, (120,210))
+    font = pygame.font.SysFont('franklingothicheavy', 30)
+    text1 = font.render('GAME OVER ', 1, (0, 63, 252))
+    text2 = font.render('SCORE : '+str(roundno-1), 1, (0, 63, 252))
+    screen.blit(text1, (120,210))
+    screen.blit(text2, (120,240))
     pygame.display.update()
     i = 0
     while i < 200:
@@ -129,6 +155,7 @@ def roundover():
 
 # main game
 
+lives = 3
 countforincreasingplayerspeed=0
 bullettimertime = 12
 moveflag = False
@@ -172,7 +199,7 @@ while run:
 
     for a in aliens:
         if a.y + 40 > player.y:
-            gameover()
+            lifeHit()
 
         if a.x + a.vel > a.initx + 40 or a.x + a.vel < a.initx - 40:
             a.vel *= -1
