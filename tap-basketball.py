@@ -104,7 +104,7 @@ while run:
 
 
     if b.x + 16 > bask.x and b.x + 16 < bask.x + 128 and  neg == -1:
-        if b.y + 32 > bask.y + 40 and b.y + 32 < bask.y + 100:
+        if b.y + 32 < bask.y + 40 and b.y + 32 - ((jumpcount ** 2) * 0.4 * neg) > bask.y + 40:
             if left:
                 left = False
                 right = True
