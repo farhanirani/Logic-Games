@@ -4,7 +4,7 @@ pygame.init()
 
 mainClock = pygame.time.Clock()
 pygame.display.set_caption("particle-explosion")
-screen = pygame.display.set_mode((500, 500),0,32)
+screen = pygame.display.set_mode((600, 600),0,32)
 
 particles = []
 

@@ -3,7 +3,7 @@ pygame.init()
 os.chdir("files/snakegamefiles")
 
 screen = pygame.display.set_mode((500,500))
-pygame.display.set_caption("snake(ie. neel) game")
+pygame.display.set_caption("snake game")
 clock = pygame.time.Clock()
 snakeimg = pygame.image.load("snake.png")
 pygame.display.set_icon(snakeimg)

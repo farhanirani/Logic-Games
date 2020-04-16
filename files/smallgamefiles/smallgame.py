@@ -1,5 +1,4 @@
-import pygame,os
-os.chdir('files/smallgamefiles')
+import pygame
 pygame.init()  
 
 walkRight = [pygame.image.load('R%s.png' % frame) for frame in range(1, 10)]
