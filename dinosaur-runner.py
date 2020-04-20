@@ -45,6 +45,18 @@ def drawTimer():
 
 
 def gameover():
+    screen.fill((255,255,255))
+    pygame.draw.line(screen, (83, 83, 83), (groundx, 250+60), (groundx2,250+60), 1)
+
+    for gp in groundparticles:
+        pygame.draw.rect(screen, (83, 83, 83), (gp[0], gp[1], gp[2], gp[3]) )
+
+    for cac in cactusobjects:
+        cac.draw()
+
+    screen.blit(bottomimg,(0,350))
+    
+
     gameoverIMG = pygame.image.load("gameover.jpg").convert()
     gameoverIMG.set_colorkey((255,255,255))
     gameoverIMG = pygame.transform.scale(gameoverIMG, (200,12))
