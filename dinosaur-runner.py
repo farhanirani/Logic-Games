@@ -296,7 +296,7 @@ while True:
         if run == 1:
             if particle[3] == 2:
                 for cac in cactusobjects:
-                    if particle[0][0] + 40 > cac.x and particle[0][0] + 40 < cac.x+cac.IMG.get_size()[0]  and particle[0][1] > 310-cac.IMG.get_size()[1] and run == 1:
+                    if particle[0][0] + 40 > cac.x and particle[0][0] + 40 < cac.x+cac.IMG.get_size()[0]+30  and particle[0][1] > 310-cac.IMG.get_size()[1] and run == 1:
                         for i in range(30):
                             blastparticles.append([ [cac.x +( cac.IMG.get_size()[0] / 2), 310-cac.IMG.get_size()[1] +(cac.IMG.get_size()[1] / 2)], [random.randint(0, 20) / 10 - 1, random.randint(0, 20) / 10 - 1], random.randint(4,8)])
                         cactusobjects.remove(cac)
