@@ -26,7 +26,6 @@ def drawTimer():
 def redraw():
     global movementCount
     drawTimer()
-
     screen.blit(bottomimg,(0,350))
     pygame.display.update()
 
@@ -46,7 +45,12 @@ def startGame():
                     return
 
 #main game
-
+duckimages = []
+for i in range(1,3):
+    picture = pygame.image.load("duck_"+str(i)+".png").convert()
+    picture.set_colorkey((255,255,255))
+    picture = pygame.transform.scale(picture,(86,70))
+    duckimages.append(picture)
 images = []
 for i in range(1,6):
     picture = pygame.image.load("image_part_00"+str(i)+".jpg").convert()
@@ -60,10 +64,12 @@ groundparticlestimer = 0
 ShootTimer = 0
 ShootTime = 100
 isJump = False
-JumpTimer = 20
+isDuck = False
+JumpTimer = 25
 
 xdino = 80
 ydino = 250
+ydinotemp = 250
 
 movementCount = 0
 
@@ -88,6 +94,13 @@ while True:
                 isJump = True
                 movementCount = 0
 
+        #duck
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_DOWN]:     
+            isDuck = True
+        else:
+            isDuck = False
+
         # blast
         if event.type == pygame.KEYDOWN and ShootTimer == 0:
             if event.key == K_RIGHT:
@@ -104,27 +117,48 @@ while True:
 
     if groundparticlestimer == 0:
         groundparticles.append( [ 967 , random.randint(315,330) , random.randint(1,8) , random.randint(1,2) ])
-        groundparticlestimer = random.randint(2,25)
+        groundparticlestimer = random.randint(0,15)
     else:
         groundparticlestimer -= 1
 
     for gp in groundparticles:
         pygame.draw.rect(screen, (83, 83, 83), (gp[0], gp[1], gp[2], gp[3]) )
-        gp[0] -= 2
+        gp[0] -= 4
+    
+    for gp in groundparticles:
+        if gp[0] < 40:
+            groundparticles.remove(gp)
     
 
     #jump
     if isJump:
-        if JumpTimer >= -20:
+        if JumpTimer >= -25:
             neg = 1
             if JumpTimer < 0:
                 neg = -1
-            ydino -= (JumpTimer ** 2) * 0.06 * neg
+                if isDuck:
+                    neg = -6
+            if ydino - (JumpTimer ** 2) * 0.035 * neg < ydinotemp:
+                ydino -= (JumpTimer ** 2) * 0.035 * neg
+            else:
+                ydino = ydinotemp * 1
             JumpTimer -= 1
         else:
             isJump = False
-            JumpTimer = 20
+            JumpTimer = 25
+
         screen.blit(images[0], (int(xdino), int(ydino)))
+        pygame.draw.rect(screen, (255,0,0), (xdino+4,ydino+4,50,50), 1)
+        
+    elif isDuck:
+        movementCount += 1
+        if movementCount % 20 < 10:
+            screen.blit(duckimages[0], (int(xdino), int(ydino)))
+        else:
+            screen.blit(duckimages[1], (int(xdino), int(ydino)))
+
+        pygame.draw.rect(screen, (255,0,0), (xdino+4,ydino+30,80,40), 1)
+
     else: # else move right obviously
         movementCount += 1
         # animation
@@ -133,7 +167,7 @@ while True:
         else:
             screen.blit(images[3], (int(xdino), int(ydino)))
 
-        # pygame.draw.rect(screen, (255,0,0), (xdino+4,ydino+4,56,60), 1)
+        pygame.draw.rect(screen, (255,0,0), (xdino+4,ydino+4,50,50), 1)
 
 
     # blast
