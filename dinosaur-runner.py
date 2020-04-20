@@ -27,9 +27,7 @@ def redraw():
     global movementCount
     drawTimer()
 
-    
-
-    screen.blit(bottomimg,(0,300))
+    screen.blit(bottomimg,(0,350))
     pygame.display.update()
 
 
@@ -38,7 +36,7 @@ def startGame():
     screen.fill((255,255,255))
     screen.blit(images[1], (int(xdino), int(ydino)))
     drawTimer()
-    screen.blit(bottomimg,(0,300))
+    screen.blit(bottomimg,(0,350))
     pygame.display.update()
     while True:
         for event in pygame.event.get():
@@ -57,13 +55,15 @@ for i in range(1,6):
     images.append(picture)
 
 particles = []
+groundparticles = []
+groundparticlestimer = 0
 ShootTimer = 0
 ShootTime = 100
 isJump = False
 JumpTimer = 20
 
 xdino = 80
-ydino = 200
+ydino = 250
 
 movementCount = 0
 
@@ -99,6 +99,19 @@ while True:
                     particles.append([ [50+xdino, 35+ydino], [random.randint(6,8) , -1 * random.randint(6, 10) / 10 ], random.randint(6,8), 1])
 
     #-------------------end of key pressed
+    # draw ground
+    pygame.draw.line(screen, (83, 83, 83), (xdino-50, 250+60), (970,250+60), 1)
+
+    if groundparticlestimer == 0:
+        groundparticles.append( [ 967 , random.randint(315,330) , random.randint(1,8) , random.randint(1,2) ])
+        groundparticlestimer = random.randint(2,25)
+    else:
+        groundparticlestimer -= 1
+
+    for gp in groundparticles:
+        pygame.draw.rect(screen, (83, 83, 83), (gp[0], gp[1], gp[2], gp[3]) )
+        gp[0] -= 2
+    
 
     #jump
     if isJump:
@@ -106,7 +119,7 @@ while True:
             neg = 1
             if JumpTimer < 0:
                 neg = -1
-            ydino -= (JumpTimer ** 2) * 0.04 * neg
+            ydino -= (JumpTimer ** 2) * 0.06 * neg
             JumpTimer -= 1
         else:
             isJump = False
