@@ -14,6 +14,9 @@ bottomimg = pygame.image.load("bottom.png")
 cactusIMG = pygame.image.load("cactus.jpg").convert()
 cactusIMG.set_colorkey((255,255,255))
 
+groundx = 500
+groundx2 = 500
+
 class cactus:
     def __init__(self):
         self.scalelen = random.randint(30, 90)
@@ -28,7 +31,7 @@ class cactus:
     def draw(self):
         global movementSpeed
         for i in range(self.num):
-            screen.blit(self.IMG, ( self.x + (i* self.IMG.get_size()[0] ) , 310 - self.IMG.get_size()[1] ) )
+            screen.blit(self.IMG, ( int(self.x + (i* self.IMG.get_size()[0] )) , int(310 - self.IMG.get_size()[1]) ) )
         # pygame.draw.rect(screen, (255,0,0), (self.x, 310-self.IMG.get_size()[1], self.num*self.IMG.get_size()[0], self.IMG.get_size()[1] ), 1)
         self.x -= movementSpeed
         
@@ -45,6 +48,10 @@ def drawTimer():
 
 
 def gameover():
+    global score
+    score = 0
+    global groundx
+    global groundx2
     screen.fill((255,255,255))
     pygame.draw.line(screen, (83, 83, 83), (groundx, 250+60), (groundx2,250+60), 1)
 
@@ -57,28 +64,41 @@ def gameover():
     screen.blit(bottomimg,(0,350))
     
 
-    gameoverIMG = pygame.image.load("gameover.jpg").convert()
-    gameoverIMG.set_colorkey((255,255,255))
-    gameoverIMG = pygame.transform.scale(gameoverIMG, (200,12))
-    screen.blit(gameoverIMG, (400, 50))
+    gameoverIMG = pygame.image.load("gameover.jpg")
+    restartIMG = pygame.image.load("restart.jpg")
+    screen.blit(gameoverIMG, (280, 50))
+    screen.blit(restartIMG, (440, 100))
     
     screen.blit(images[4], (int(xdino), int(ydino)))
     pygame.display.update()
-    i = 0
-    while i < 400:
+    run = True
+    i=0
+    while i < 100:
         pygame.time.delay(10)
-        i += 1
+        i+=1
+    while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-    pygame.quit()
-    sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == K_SPACE:
+                    run = False
+                    # to reset all
+                    groundparticles.clear()
+                    cactusobjects.clear()
+                    blastparticles.clear()
+                    particles.clear()
+                    groundx = 500
+                    groundx2 = 500
 
 
 def redraw():
     drawTimer()
     screen.blit(bottomimg,(0,350))
+    text = font.render(str(score), 1, (0,0,0))
+    screen.blit(text, (880,10))
     pygame.display.update()
 
 
@@ -91,6 +111,14 @@ def startGame():
     pygame.display.update()
     while True:
         for event in pygame.event.get():
+            #exit
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
             if event.type == pygame.KEYDOWN :
                 if event.key == K_SPACE:
                     isJump = True
@@ -121,21 +149,22 @@ ShootTimer = 0
 ShootTime = 200
 isJump = False
 isDuck = False
-JumpTimer = 25
+JumpTimer = 20
 
-groundx = 500
-groundx2 = 500
+score = 0
+font = pygame.font.SysFont('comicsans', 30, True, True)
 
 xdino = 80
 ydino = 250
 ydinotemp = 250
 
 movementCount = 0
-movementSpeed = 6
+movementSpeed = 8
 neg = 0
 
 startGame()
 while True:
+    score += 1
     screen.fill((255,255,255))
     
     for event in pygame.event.get():
@@ -166,6 +195,7 @@ while True:
         # blast
         if event.type == pygame.KEYDOWN and ShootTimer == 0:
             if event.key == K_RIGHT:
+                movementSpeed += 0.2
                 ShootTimer = ShootTime                   
                 particles.append([ [50+xdino-16, 35+ydino-3], [8 , 0], 16, 2])
                 for _ in range(15):
@@ -192,31 +222,31 @@ while True:
         gp[0] -= movementSpeed
     
     for gp in groundparticles:
-        if gp[0] < 40:
+        if gp[0] < 0:
             groundparticles.remove(gp)
     
 
     #jump
     if isJump:
-        if JumpTimer >= -25:
+        if JumpTimer >= -20:
             if neg != -6:
                 neg = 1
                 if JumpTimer < 0:
                     neg = -1
                     if isDuck:
                         neg = -6
-            if ydino - (JumpTimer ** 2) * 0.035 * neg < ydinotemp:
-                ydino -= (JumpTimer ** 2) * 0.035 * neg
+            if ydino - (JumpTimer ** 2) * 0.05 * neg < ydinotemp:
+                ydino -= (JumpTimer ** 2) * 0.05 * neg
             else:
                 ydino = ydinotemp * 1
                 isJump = False
-                JumpTimer = 25
+                JumpTimer = 20
                 neg = 1
             
             JumpTimer -= 1
         else:
             isJump = False
-            JumpTimer = 25
+            JumpTimer = 20
             neg = 1
 
         screen.blit(images[0], (int(xdino), int(ydino)))
@@ -264,7 +294,7 @@ while True:
     #cactus
     if cactustimer == 0:
         cactusobjects.append( cactus() )
-        cactustimer = random.randint(60,140)
+        cactustimer = random.randint(40,140)
     else:
         cactustimer -= 1
 
@@ -284,7 +314,7 @@ while True:
     #             gameover()
     # else:
     for cac in cactusobjects:
-        if xdino+4+50 + movementSpeed < cac.x  or xdino+4 > cac.x + cac.num * cac.IMG.get_size()[0] or ydino+4+50 < 310-cac.IMG.get_size()[1] :
+        if xdino+4+50 + movementSpeed < cac.x  or xdino+4 > cac.x + cac.num * cac.IMG.get_size()[0] or ydino+4+50 < 320-cac.IMG.get_size()[1] :
             pass
         else:
             gameover()
@@ -296,7 +326,7 @@ while True:
         if run == 1:
             if particle[3] == 2:
                 for cac in cactusobjects:
-                    if particle[0][0] + 40 > cac.x and particle[0][0] + 40 < cac.x+cac.IMG.get_size()[0]+30  and particle[0][1] > 310-cac.IMG.get_size()[1] and run == 1:
+                    if particle[0][0] + 40 > cac.x and particle[0][0] + 40 < cac.x+cac.IMG.get_size()[0]+50  and particle[0][1] > 310-cac.IMG.get_size()[1] and run == 1:
                         for i in range(30):
                             blastparticles.append([ [cac.x +( cac.IMG.get_size()[0] / 2), 310-cac.IMG.get_size()[1] +(cac.IMG.get_size()[1] / 2)], [random.randint(0, 20) / 10 - 1, random.randint(0, 20) / 10 - 1], random.randint(4,8)])
                         cactusobjects.remove(cac)
