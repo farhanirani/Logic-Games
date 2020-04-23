@@ -130,12 +130,12 @@ def decoration():
         for j in range(sizeofboard):
             p[board[i][j].color] += 1
     if p[1] == 0 and playernumber > 3:
-        text = font.render('Player 2 screenS!!!! ', 1, (0,0,255))
+        text = font.render('Player 2 wins!!!! ', 1, (0,0,255))
         screen.blit(text, (170,620))
         pygame.display.update()
         delayy()
     elif p[2] == 0 and playernumber > 3:
-        text = font.render('Player 1 screenS!!! ', 1, (255,0,0))
+        text = font.render('Player 1 wins!!! ', 1, (255,0,0))
         screen.blit(text, (170,620))
         pygame.display.update()
         delayy()
