@@ -49,9 +49,10 @@ def drawTimer():
 
 def gameover():
     global score
-    score = 0
     global groundx
     global groundx2
+    global movementSpeed
+    
     screen.fill((255,255,255))
     pygame.draw.line(screen, (83, 83, 83), (groundx, 250+60), (groundx2,250+60), 1)
 
@@ -65,7 +66,8 @@ def gameover():
 
     text = font.render("Right Arrow to shoot, Keep Ducking to load the SHOOT-O-METER", 1, (97, 169, 244))
     screen.blit(text, (80,425))
-    
+    text = font.render("SCORE : "+str(score), 1, (0,0,0))
+    screen.blit(text, (800,10))
 
     gameoverIMG = pygame.image.load("gameover.jpg")
     restartIMG = pygame.image.load("restart.jpg")
@@ -95,6 +97,8 @@ def gameover():
                     particles.clear()
                     groundx = 500
                     groundx2 = 500
+                    movementSpeed = 8
+                    score = 0
 
 
 def redraw():
@@ -170,6 +174,8 @@ ydinotemp = 250
 movementCount = 0
 movementSpeed = 8
 neg = 0
+veryTempVar = 4
+cactusDecreaseInterval = 0
 
 startGame()
 while True:
@@ -206,7 +212,7 @@ while True:
         # blast
         if event.type == pygame.KEYDOWN and ShootTimer == 0:
             if event.key == K_RIGHT:
-                movementSpeed += 0.2
+                movementSpeed += 0.5
                 ShootTimer = ShootTime                   
                 particles.append([ [50+xdino-16, 35+ydino-3], [8 , 0], 16, 2])
                 for _ in range(15):
@@ -305,7 +311,14 @@ while True:
     #cactus
     if cactustimer == 0:
         cactusobjects.append( cactus() )
-        cactustimer = random.randint(40,140)
+        cactustimer = random.randint(30,200-cactusDecreaseInterval)
+        if veryTempVar == 0:
+            if 140 - cactusDecreaseInterval > 65:
+                cactusDecreaseInterval += 5
+            veryTempVar = 4
+        else:
+            veryTempVar -= 1
+            
     else:
         cactustimer -= 1
 
@@ -338,8 +351,8 @@ while True:
             if particle[3] == 2:
                 for cac in cactusobjects:
                     if particle[0][0] + 40 > cac.x and particle[0][0] + 40 < cac.x+cac.IMG.get_size()[0]+50  and particle[0][1] > 310-cac.IMG.get_size()[1] and run == 1:
-                        for i in range(30):
-                            blastparticles.append([ [cac.x +( cac.IMG.get_size()[0] / 2), 310-cac.IMG.get_size()[1] +(cac.IMG.get_size()[1] / 2)], [random.randint(0, 20) / 10 - 1, random.randint(0, 20) / 10 - 1], random.randint(4,8)])
+                        for i in range(int(cac.num * cac.IMG.get_size()[1]/10)):
+                            blastparticles.append([ [cac.x +( cac.IMG.get_size()[0] / 2), 310-cac.IMG.get_size()[1] +(cac.IMG.get_size()[1] / 2)], [random.randint(0, 10) , random.randint(0, 20) / 10 - 1], random.randint(4,8)])
                         cactusobjects.remove(cac)
                         particles.remove(particle)
                         run = 0
