@@ -43,7 +43,7 @@ def drawTimer():
         ShootTimer -= 1
     
     tempLength = 60 / ShootTime * ( ShootTime - ShootTimer )
-    pygame.draw.rect(screen, (0,0,0), (15,15,60,10))
+    pygame.draw.rect(screen, (83, 83, 83), (15,15,60,10))
     pygame.draw.rect(screen, (97, 169, 244), (15,15, int(tempLength),10))
 
 
@@ -62,7 +62,8 @@ def gameover():
         cac.draw()
 
     screen.blit(bottomimg,(0,350))
-    text = font.render("RIGHT ARROW => shoot, Keep Ducking to load the SHOOT-O-METER", 1, (83, 83, 83))
+
+    text = font.render("Right Arrow to shoot, Keep Ducking to load the SHOOT-O-METER", 1, (97, 169, 244))
     screen.blit(text, (80,425))
     
 
@@ -110,8 +111,12 @@ def startGame():
     screen.blit(images[1], (int(xdino), int(ydino)))
     drawTimer()
     screen.blit(bottomimg,(0,350))
-    text = font.render("RIGHT ARROW => shoot, Keep Ducking to load the SHOOT-O-METER", 1, (83, 83, 83))
+
+    text = font.render("SHOOT-O-METER", 1, (97, 169, 244))
+    screen.blit(text, (15,45))
+    text = font.render("Right Arrow to shoot, Keep Ducking to load the SHOOT-O-METER", 1, (97, 169, 244))
     screen.blit(text, (80,425))
+
     pygame.display.update()
     while True:
         for event in pygame.event.get():
