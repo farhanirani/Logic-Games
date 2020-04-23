@@ -32,7 +32,7 @@ class cactus:
         global movementSpeed
         for i in range(self.num):
             screen.blit(self.IMG, ( int(self.x + (i* self.IMG.get_size()[0] )) , int(310 - self.IMG.get_size()[1]) ) )
-        # pygame.draw.rect(screen, (255,0,0), (self.x, 310-self.IMG.get_size()[1], self.num*self.IMG.get_size()[0], self.IMG.get_size()[1] ), 1)
+        # pygame.draw.rect(screen, (255,0,0), (self.x+20, 310-self.IMG.get_size()[1], self.num*self.IMG.get_size()[0], self.IMG.get_size()[1] ), 1)
         self.x -= movementSpeed
         
 
@@ -62,6 +62,8 @@ def gameover():
         cac.draw()
 
     screen.blit(bottomimg,(0,350))
+    text = font.render("RIGHT ARROW => shoot, Keep Ducking to load the SHOOT-O-METER", 1, (83, 83, 83))
+    screen.blit(text, (80,425))
     
 
     gameoverIMG = pygame.image.load("gameover.jpg")
@@ -73,7 +75,7 @@ def gameover():
     pygame.display.update()
     run = True
     i=0
-    while i < 100:
+    while i < 200:
         pygame.time.delay(10)
         i+=1
     while run:
@@ -98,7 +100,7 @@ def redraw():
     drawTimer()
     screen.blit(bottomimg,(0,350))
     text = font.render(str(score), 1, (0,0,0))
-    screen.blit(text, (880,10))
+    screen.blit(text, (900,10))
     pygame.display.update()
 
 
@@ -108,6 +110,8 @@ def startGame():
     screen.blit(images[1], (int(xdino), int(ydino)))
     drawTimer()
     screen.blit(bottomimg,(0,350))
+    text = font.render("RIGHT ARROW => shoot, Keep Ducking to load the SHOOT-O-METER", 1, (83, 83, 83))
+    screen.blit(text, (80,425))
     pygame.display.update()
     while True:
         for event in pygame.event.get():
@@ -152,7 +156,7 @@ isDuck = False
 JumpTimer = 20
 
 score = 0
-font = pygame.font.SysFont('comicsans', 30, True, True)
+font = pygame.font.SysFont('comicsans', 30)
 
 xdino = 80
 ydino = 250
@@ -180,7 +184,9 @@ while True:
 
         #duck
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_DOWN]:     
+        if keys[pygame.K_DOWN]:
+            if ShootTimer > 10:
+                ShootTimer -= 10
             isDuck = True
         else:
             isDuck = False
@@ -314,13 +320,13 @@ while True:
     #             gameover()
     # else:
     for cac in cactusobjects:
-        if xdino+4+50 + movementSpeed < cac.x  or xdino+4 > cac.x + cac.num * cac.IMG.get_size()[0] or ydino+4+50 < 320-cac.IMG.get_size()[1] :
+        if xdino+4+50 + movementSpeed < cac.x+20  or xdino+4 > cac.x + cac.num * cac.IMG.get_size()[0] or ydino+4+50 < 320-cac.IMG.get_size()[1] :
             pass
         else:
             gameover()
 
 
-    # check for blast hit
+    # check for blast hit 
     run = 1
     for particle in particles:
         if run == 1:
