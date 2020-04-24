@@ -7,6 +7,8 @@ mainClock = pygame.time.Clock()
 pygame.display.set_caption("dino")
 logoIMG = pygame.image.load("logoIMG.jpg")
 pygame.display.set_icon(logoIMG)
+#pygame.mixer.music.load("walk.mp3")
+#pygame.mixer.music.play(-1)
 
 screen = pygame.display.set_mode((1000, 600),0,32)
 bottomimg = pygame.image.load("bottom.png")
@@ -43,8 +45,8 @@ def drawTimer():
         ShootTimer -= 1
     
     tempLength = 60 / ShootTime * ( ShootTime - ShootTimer )
-    pygame.draw.rect(screen, (83, 83, 83), (15,15,60,10))
-    pygame.draw.rect(screen, (97, 169, 244), (15,15, int(tempLength),10))
+    pygame.draw.rect(screen, (83, 83, 83), (75,330,60,10))
+    pygame.draw.rect(screen, (97, 169, 244), (75,330, int(tempLength),10))
 
 
 def gameover():
@@ -63,8 +65,11 @@ def gameover():
         cac.draw()
 
     screen.blit(bottomimg,(0,350))
+    drawTimer()
 
-    text = font.render("Right Arrow to shoot, Keep Ducking to load the SHOOT-O-METER", 1, (97, 169, 244))
+    text = font.render("Shoot-O-meter", 1, (97, 169, 244))
+    screen.blit(text, (55,345))
+    text = font.render("Right Arrow to shoot, Keep Ducking to load the Shoot-O-meter", 1, (97, 169, 244))
     screen.blit(text, (80,425))
     text = font.render("SCORE : "+str(score), 1, (0,0,0))
     screen.blit(text, (800,10))
@@ -102,8 +107,8 @@ def gameover():
 
 
 def redraw():
-    drawTimer()
     screen.blit(bottomimg,(0,350))
+    drawTimer()
     text = font.render(str(score), 1, (0,0,0))
     screen.blit(text, (900,10))
     pygame.display.update()
@@ -116,9 +121,9 @@ def startGame():
     drawTimer()
     screen.blit(bottomimg,(0,350))
 
-    text = font.render("SHOOT-O-METER", 1, (97, 169, 244))
-    screen.blit(text, (15,45))
-    text = font.render("Right Arrow to shoot, Keep Ducking to load the SHOOT-O-METER", 1, (97, 169, 244))
+    text = font.render("Shoot-O-meter", 1, (97, 169, 244))
+    screen.blit(text, (55,345))
+    text = font.render("Right Arrow to shoot, Keep Ducking to load the Shoot-O-meter", 1, (97, 169, 244))
     screen.blit(text, (80,425))
 
     pygame.display.update()
@@ -179,7 +184,7 @@ cactusDecreaseInterval = 0
 
 startGame()
 while True:
-    score += 1
+    score += int(movementSpeed)
     screen.fill((255,255,255))
     
     for event in pygame.event.get():
@@ -196,8 +201,8 @@ while True:
         #duck
         keys = pygame.key.get_pressed()
         if keys[pygame.K_DOWN]:
-            if ShootTimer > 10:
-                ShootTimer -= 10
+            if ShootTimer > 20:
+                ShootTimer -= 20
             isDuck = True
         else:
             isDuck = False
@@ -313,8 +318,8 @@ while True:
         cactusobjects.append( cactus() )
         cactustimer = random.randint(30,200-cactusDecreaseInterval)
         if veryTempVar == 0:
-            if 140 - cactusDecreaseInterval > 65:
-                cactusDecreaseInterval += 5
+            if 140 - cactusDecreaseInterval > 40:
+                cactusDecreaseInterval += 10
             veryTempVar = 4
         else:
             veryTempVar -= 1

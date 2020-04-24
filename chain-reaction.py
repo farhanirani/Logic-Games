@@ -1,12 +1,9 @@
-import pygame,os
-os.chdir("files/chainfiles")
+import pygame
 pygame.init()
 
 screen = pygame.display.set_mode((600,700))
 pygame.display.set_caption("Chain Reaction")
 clock = pygame.time.Clock()
-pygame.mixer.music.load("walk.mp3")
-pygame.mixer.music.play(-1)
 
 #color 1 = red,   2 = blue  0 = default
 class ball:
