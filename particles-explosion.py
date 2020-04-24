@@ -1,6 +1,7 @@
 import pygame, sys, random
 from pygame.locals import *
 pygame.init()
+pygame.mouse.set_visible(False)
 
 mainClock = pygame.time.Clock()
 pygame.display.set_caption("particle-explosion")
@@ -14,11 +15,13 @@ while True:
     screen.fill((0,0,0))
     
     mx, my = pygame.mouse.get_pos()
+    # mx = random.randint(400,600)
+    # my = random.randint(400,600)
     #                  spawn x,y                   speed x, speed y               life timer and radius                        
     
-    for _ in range(30):
+    for _ in range(50):
         # particles.append([ [mx, my], [random.randint(0, 20) / 10 - 1, -2], random.randint(4,8)])
-        particles.append([ [mx, my], [random.randint(-10, 10) , random.randint(-10, 10)], random.randint(4,8), ((random.randint(1,255),0,0))])
+        particles.append([ [mx, my], [random.randint(-8, 8) , random.randint(-8, 8)], random.randint(4,10), (0,0,(random.randint(1,255))) ])
 
     for particle in particles:
         particle[0][0] += particle[1][0]

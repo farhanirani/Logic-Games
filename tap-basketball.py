@@ -66,7 +66,7 @@ jumpcount = 10
 delayNum = 0
 bask = basket()
 b = ball()
-vel = 5
+vel = 6
 left = False
 right = True
 bounce = 0
@@ -95,8 +95,8 @@ while run:
             neg = 1
             if jumpcount < 0:
                 neg = -1
-            if b.y - (jumpcount ** 2) * 0.4 * neg < 550:
-                b.y -= (jumpcount ** 2) * 0.4 * neg
+            if b.y - (jumpcount ** 2) * 0.5 * neg < 550:
+                b.y -= (jumpcount ** 2) * 0.5 * neg
             jumpcount -= 1
         else:
             jumpcount = 10
@@ -104,7 +104,7 @@ while run:
 
 
     if b.x + 16 > bask.x and b.x + 16 < bask.x + 128 and  neg == -1:
-        if b.y + 32 < bask.y + 40 and b.y + 32 - ((jumpcount ** 2) * 0.4 * neg) > bask.y + 40:
+        if b.y + 32 < bask.y + 40 and b.y + 32 - ((jumpcount ** 2) * 0.5 * neg) > bask.y + 40:
             if left:
                 left = False
                 right = True
