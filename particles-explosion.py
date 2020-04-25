@@ -19,9 +19,9 @@ while True:
     # my = random.randint(400,600)
     #                  spawn x,y                   speed x, speed y               life timer and radius                        
     
-    for _ in range(50):
+    for _ in range(20):
         # particles.append([ [mx, my], [random.randint(0, 20) / 10 - 1, -2], random.randint(4,8)])
-        particles.append([ [mx, my], [random.randint(-8, 8) , random.randint(-8, 8)], random.randint(4,10), (0,0,(random.randint(1,255))) ])
+        particles.append([ [mx, my], [random.randint(-20, 20) , random.randint(-20, 20)], random.randint(4,10), (0,0,(random.randint(1,255))) ])
 
     for particle in particles:
         particle[0][0] += particle[1][0]
