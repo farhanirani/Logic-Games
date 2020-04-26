@@ -8,11 +8,14 @@ pygame.display.set_caption("TETRIS")
 win = pygame.display.set_mode((400, 700),0,32)
 tetri = pygame.image.load("tetris.png")
 rowflash = pygame.image.load("rowflash.png")
+pygame.display.set_icon(rowflash)
+
 
 
 def checkIfRowIsFull():
     global board
     tempTimer = False
+    rowNum = []
 
     for row in range(20):
         isFull = True
@@ -21,6 +24,7 @@ def checkIfRowIsFull():
                 isFull = False
 
         if isFull:
+            rowNum.append(row)
             if not tempTimer:
                 pygame.time.delay(500)
             tempTimer = True
@@ -34,7 +38,13 @@ def checkIfRowIsFull():
 
     if tempTimer:
         pygame.time.delay(500)
-                
+        for num in rowNum:
+            for col in range(10):
+                board[0][col] = 0
+            for row in reversed(range(num)):
+                board[row+1] = board[row] * 1
+        
+
 
 def drawBoard():
     win.fill((0,0,0))
@@ -46,10 +56,15 @@ def drawBoard():
                 win.blit(tetri, (50+ 30*col, 50+ 30*row))
     pygame.display.update()
 
+
+
 #main game
 
 board = [[0 for col in range(10)] for row in range(20) ]
-
+for col in range(10):
+        if col != 4:
+            for row in range(1,20):
+                board[row][col] = 1
 curCol = 4
 curRow = 0
 moveTimer = 0
@@ -71,58 +86,61 @@ while True:
     # #movement -------------------------------------------------------------------
     keys = pygame.key.get_pressed()
     
-    incrementTimer = False
+    if moveTimer >= 0:
+        incrementTimer = False
 
-    if keys[pygame.K_LEFT] and keys[pygame.K_DOWN]:
-        if curCol > 0 and board[curRow+1][curCol-1] != 1 and curRow < 19 : # to move bottom left
-            board[curRow][curCol] = 0
-            curCol -= 1
-            curRow += 1 
-        elif curCol > 0 and board[curRow][curCol-1] != 1 : # to move left
-            board[curRow][curCol] = 0
-            curCol -= 1
-        elif curRow < 19 and board[curRow+1][curCol] != 1 : # to move down
+        if keys[pygame.K_LEFT] and keys[pygame.K_DOWN]:
+            if curCol > 0 and board[curRow+1][curCol-1] != 1 and curRow < 19 : # to move bottom left
+                board[curRow][curCol] = 0
+                curCol -= 1
+                curRow += 1 
+            elif curCol > 0 and board[curRow][curCol-1] != 1 : # to move left
+                board[curRow][curCol] = 0
+                curCol -= 1
+            elif curRow < 19 and board[curRow+1][curCol] != 1 : # to move down
+                board[curRow][curCol] = 0
+                curRow += 1
+            else:
+                incrementTimer = True
+
+        
+        elif keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
+            if curCol < 9 and board[curRow+1][curCol+1] != 1 and curRow < 19 :  #move bottom right
+                board[curRow][curCol] = 0
+                curCol += 1
+                curRow += 1
+            elif curCol < 9 and board[curRow][curCol+1] != 1 : # move right
+                board[curRow][curCol] = 0
+                curCol += 1
+            elif curRow < 19 and board[curRow+1][curCol] != 1 : # to move down
+                board[curRow][curCol] = 0
+                curRow += 1
+            else:
+                incrementTimer = True
+
+
+        elif keys[pygame.K_LEFT]:
+            if curCol > 0 and board[curRow][curCol-1] != 1 :
+                board[curRow][curCol] = 0
+                curCol -= 1
+            else:
+                incrementTimer = True
+
+        elif keys[pygame.K_RIGHT] :
+            if curCol < 9 and board[curRow][curCol+1] != 1 :
+                board[curRow][curCol] = 0
+                curCol += 1
+            else:
+                incrementTimer = True
+        
+        elif keys[pygame.K_DOWN] and curRow < 19 and board[curRow+1][curCol] != 1 :
             board[curRow][curCol] = 0
             curRow += 1
+
         else:
             incrementTimer = True
-
-    
-    elif keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
-        if curCol < 9 and board[curRow+1][curCol+1] != 1 and curRow < 19 :  #move bottom right
-            board[curRow][curCol] = 0
-            curCol += 1
-            curRow += 1
-        elif curCol < 9 and board[curRow][curCol+1] != 1 : # move right
-            board[curRow][curCol] = 0
-            curCol += 1
-        elif curRow < 19 and board[curRow+1][curCol] != 1 : # to move down
-            board[curRow][curCol] = 0
-            curRow += 1
-        else:
-            incrementTimer = True
-
-
-    elif keys[pygame.K_LEFT]:
-        if curCol > 0 and board[curRow][curCol-1] != 1 :
-            board[curRow][curCol] = 0
-            curCol -= 1
-        else:
-            incrementTimer = True
-
-    elif keys[pygame.K_RIGHT] :
-        if curCol < 9 and board[curRow][curCol+1] != 1 :
-            board[curRow][curCol] = 0
-            curCol += 1
-        else:
-            incrementTimer = True
-    
-    elif keys[pygame.K_DOWN] and curRow < 19 and board[curRow+1][curCol] != 1 :
-        board[curRow][curCol] = 0
-        curRow += 1
-
     else:
-        incrementTimer = True
+            incrementTimer = True
 
     # #movement -------------------------------------------------------------------
 
@@ -153,10 +171,11 @@ while True:
         curRow = 0
         curCol = 4
         isFalling = True
-        board[curRow][curCol] = 1
         checkIfRowIsFull()
+        moveTimer = -5
+        board[curRow][curCol] = 1
     else:
         board[curRow][curCol] = 0
     
 
-    mainClock.tick(20)
+    mainClock.tick(10)
