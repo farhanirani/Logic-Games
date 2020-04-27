@@ -7,8 +7,8 @@ mainClock = pygame.time.Clock()
 pygame.display.set_caption("dino")
 logoIMG = pygame.image.load("logoIMG.jpg")
 pygame.display.set_icon(logoIMG)
-# pygame.mixer.music.load("walk.mp3")
-# pygame.mixer.music.play(-1)
+pygame.mixer.music.load("walk.mp3")
+pygame.mixer.music.play(-1)
 
 screen = pygame.display.set_mode((1000, 600),0,32)
 bottomimg = pygame.image.load("bottom.png")
@@ -86,12 +86,10 @@ def gameover():
     while i < 200:
         pygame.time.delay(10)
         i+=1
-    while run:
+    while run:  
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit()
-
             if event.type == pygame.KEYDOWN:
                 if event.key == K_SPACE:
                     run = False
@@ -104,6 +102,8 @@ def gameover():
                     groundx2 = 500
                     movementSpeed = 8
                     score = 0
+                if event.key == K_ESCAPE:
+                    pygame.quit()
 
 
 def redraw():
@@ -192,11 +192,9 @@ while True:
         #exit
         if event.type == QUIT:
             pygame.quit()
-            sys.exit()
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 pygame.quit()
-                sys.exit()
 
         #duck
         keys = pygame.key.get_pressed()
@@ -318,7 +316,7 @@ while True:
         cactusobjects.append( cactus() )
         cactustimer = random.randint(30,200-cactusDecreaseInterval)
         if veryTempVar == 0:
-            if 140 - cactusDecreaseInterval > 40:
+            if 200 - cactusDecreaseInterval > 100:
                 cactusDecreaseInterval += 10
             veryTempVar = 4
         else:
@@ -346,6 +344,7 @@ while True:
         if xdino+4+50 + movementSpeed < cac.x+20  or xdino+4 > cac.x + cac.num * cac.IMG.get_size()[0] or ydino+4+50 < 320-cac.IMG.get_size()[1] :
             pass
         else:
+            cactusDecreaseInterval = 0
             gameover()
 
 
