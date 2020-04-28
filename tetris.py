@@ -236,4 +236,4 @@ while True:
             for sleep in range(lineSleeping+1):
                 board[curRow+ stand][curCol+ sleep] = 0
 
-    mainClock.tick(15)
+    mainClock.tick(10)
