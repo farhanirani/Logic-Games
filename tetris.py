@@ -1,4 +1,4 @@
-import pygame, os
+import pygame, os, random
 from pygame.locals import *
 os.chdir('files/tetrisfiles')
 pygame.init()
@@ -9,8 +9,6 @@ win = pygame.display.set_mode((400, 700),0,32)
 tetri = pygame.image.load("tetris.png")
 rowflash = pygame.image.load("rowflash.png")
 pygame.display.set_icon(rowflash)
-
-
 
 def checkIfRowIsFull():
     global board
@@ -46,6 +44,29 @@ def checkIfRowIsFull():
         
 
 
+def checkIfGameover():
+    for col in range(10):
+        if board[0][col] == 1:
+            font = pygame.font.SysFont('franklingothicheavy', 20)
+            text = font.render('GAME OVER ', 1, (200,200,200))
+            win.blit(text, (140,210))
+            pygame.display.update()
+            i = 0
+            while i < 350:
+                pygame.time.delay(10)
+                i += 1
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        exit()
+                    if event.type == KEYDOWN:
+                        if event.key ==K_ESCAPE:
+                            pygame.quit()
+                            exit()
+            pygame.quit()
+
+
+
 def drawBoard():
     win.fill((0,0,0))
     pygame.draw.rect(win, (83,83,83), (50,50,300,600))
@@ -63,11 +84,14 @@ def drawBoard():
 board = [[0 for col in range(10)] for row in range(20) ]
 for col in range(10):
         if col != 4:
-            for row in range(1,20):
+            for row in range(15,20):
                 board[row][col] = 1
 curCol = 4
 curRow = 0
 moveTimer = 0
+
+lineSleeping = 0
+lineStanding = 1
 
 isFalling = False
 
@@ -81,6 +105,9 @@ while True:
             if event.key == K_ESCAPE:
                 pygame.quit()
                 exit()
+            if event.key == K_UP and curCol != 9:
+                if lineSleeping == 1 or board[curRow][curCol+1] != 1:
+                    lineSleeping, lineStanding = lineStanding, lineSleeping
     
     
     # #movement -------------------------------------------------------------------
@@ -90,14 +117,14 @@ while True:
         incrementTimer = False
 
         if keys[pygame.K_LEFT] and keys[pygame.K_DOWN]:
-            if curCol > 0 and board[curRow+1][curCol-1] != 1 and curRow < 19 : # to move bottom left
+            if curCol > 0  and curRow+lineStanding  < 19 and board[curRow +1][curCol-1] != 1 and board[curRow +1][curCol+lineSleeping-1] != 1 and board[curRow+lineStanding +1][curCol-1] != 1 : # to move bottom left
                 board[curRow][curCol] = 0
                 curCol -= 1
                 curRow += 1 
-            elif curCol > 0 and board[curRow][curCol-1] != 1 : # to move left
+            elif curCol > 0 and board[curRow][curCol-1] != 1 and board[curRow+lineStanding ][curCol-1] != 1 : # to move left
                 board[curRow][curCol] = 0
                 curCol -= 1
-            elif curRow < 19 and board[curRow+1][curCol] != 1 : # to move down
+            elif curRow+lineStanding  < 19 and board[curRow+lineStanding +1][curCol] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping] != 1 : # to move down
                 board[curRow][curCol] = 0
                 curRow += 1
             else:
@@ -105,14 +132,14 @@ while True:
 
         
         elif keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
-            if curCol < 9 and board[curRow+1][curCol+1] != 1 and curRow < 19 :  #move bottom right
+            if curCol+lineSleeping < 9 and curRow+lineStanding  < 19 and board[curRow+1][curCol+1] != 1 and board[curRow +1][curCol+lineSleeping +1] != 1 and  board[curRow+lineStanding +1][curCol+lineSleeping +1] != 1 :  #move bottom right
                 board[curRow][curCol] = 0
                 curCol += 1
                 curRow += 1
-            elif curCol < 9 and board[curRow][curCol+1] != 1 : # move right
+            elif curCol+lineSleeping < 9 and board[curRow][curCol+ lineSleeping+1] != 1 and board[curRow+lineStanding ][curCol+ lineSleeping+1] != 1 : # move right
                 board[curRow][curCol] = 0
                 curCol += 1
-            elif curRow < 19 and board[curRow+1][curCol] != 1 : # to move down
+            elif curRow+lineStanding  < 19 and board[curRow+lineStanding +1][curCol] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping] != 1 : # to move down
                 board[curRow][curCol] = 0
                 curRow += 1
             else:
@@ -120,20 +147,20 @@ while True:
 
 
         elif keys[pygame.K_LEFT]:
-            if curCol > 0 and board[curRow][curCol-1] != 1 :
+            if curCol > 0 and board[curRow][curCol-1] != 1 and board[curRow+lineStanding ][curCol-1] != 1 :
                 board[curRow][curCol] = 0
                 curCol -= 1
             else:
                 incrementTimer = True
 
         elif keys[pygame.K_RIGHT] :
-            if curCol < 9 and board[curRow][curCol+1] != 1 :
+            if curCol+lineSleeping < 9 and board[curRow][curCol+ lineSleeping+1] != 1 and board[curRow+lineStanding ][curCol+ lineSleeping+1] != 1 :
                 board[curRow][curCol] = 0
                 curCol += 1
             else:
                 incrementTimer = True
         
-        elif keys[pygame.K_DOWN] and curRow < 19 and board[curRow+1][curCol] != 1 :
+        elif keys[pygame.K_DOWN] and curRow+lineStanding  < 19 and board[curRow+lineStanding +1][curCol] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping] != 1 :
             board[curRow][curCol] = 0
             curRow += 1
 
@@ -152,15 +179,19 @@ while True:
         else:
             moveTimer += 1
 
-    if curRow == 19 or board[curRow+1][curCol] == 1 :
+    if incrementTimer and (curRow+lineStanding  >= 19 or board[curRow+lineStanding +1][curCol] == 1 or board[curRow+lineStanding +1][curCol+lineSleeping] == 1) :
         isFalling = False
     
 
-    #set curr position to 1
-    board[curRow][curCol] = 1
+    #set current position to 1
+    for stand in range(lineStanding+1):
+        for sleep in range(lineSleeping+1):
+            board[curRow+ stand][curCol+ sleep] = 1
     
     drawBoard()
-    
+
+    # pygame.draw.rect(win, (255,0,0), (50+ 30*curCol, 50+ 30*curRow, 30*(1+lineSleeping), 30*(1+lineStanding) ), 1 )
+    # pygame.display.update()
     
     # os.system('cls')
     # for i in range(20):
@@ -173,9 +204,19 @@ while True:
         isFalling = True
         checkIfRowIsFull()
         moveTimer = -5
-        board[curRow][curCol] = 1
+
+        lineStanding = random.randint(0,1)
+        lineSleeping = random.randint(0,1)
+        if lineSleeping == 0:
+            lineStanding = 1
+
+        for stand in range(lineStanding+1):
+            for sleep in range(lineSleeping+1):
+                board[curRow+ stand][curCol+ sleep] = 1
+
     else:
-        board[curRow][curCol] = 0
-    
+        for stand in range(lineStanding+1):
+            for sleep in range(lineSleeping+1):
+                board[curRow+ stand][curCol+ sleep] = 0
 
     mainClock.tick(10)
