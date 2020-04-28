@@ -10,8 +10,11 @@ tetri = pygame.image.load("tetris.png")
 rowflash = pygame.image.load("rowflash.png")
 pygame.display.set_icon(rowflash)
 
+score = 0
+
 def checkIfRowIsFull():
     global board
+    global score
     tempTimer = False
     rowNum = []
 
@@ -37,6 +40,7 @@ def checkIfRowIsFull():
     if tempTimer:
         pygame.time.delay(500)
         for num in rowNum:
+            score += 1
             for col in range(10):
                 board[0][col] = 0
             for row in reversed(range(num)):
@@ -47,7 +51,6 @@ def checkIfRowIsFull():
 def checkIfGameover():
     for col in range(10):
         if board[0][col] == 1:
-            font = pygame.font.SysFont('franklingothicheavy', 20)
             text = font.render('GAME OVER ', 1, (200,200,200))
             win.blit(text, (140,210))
             pygame.display.update()
@@ -68,8 +71,12 @@ def checkIfGameover():
 
 
 def drawBoard():
+    global score
     win.fill((0,0,0))
     pygame.draw.rect(win, (83,83,83), (50,50,300,600))
+
+    text = font.render("SCORE : "+str(score), 1, (200,200,200))
+    win.blit(text, (150,10))
 
     for col in range(10):
         for row in range(20):
@@ -82,10 +89,13 @@ def drawBoard():
 #main game
 
 board = [[0 for col in range(10)] for row in range(20) ]
-for col in range(10):
-        if col != 4:
-            for row in range(15,20):
-                board[row][col] = 1
+# for col in range(10):
+#         if col != 4:
+#             for row in range(15,20):
+#                 board[row][col] = 1
+
+font = pygame.font.SysFont('franklingothicheavy', 20)
+
 curCol = 4
 curRow = 0
 moveTimer = 0
@@ -220,4 +230,4 @@ while True:
             for sleep in range(lineSleeping+1):
                 board[curRow+ stand][curCol+ sleep] = 0
 
-    mainClock.tick(10)
+    mainClock.tick(15)
