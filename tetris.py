@@ -91,7 +91,7 @@ curRow = 0
 moveTimer = 0
 
 lineSleeping = 0
-lineStanding = 1
+lineStanding = 0
 
 isFalling = False
 
