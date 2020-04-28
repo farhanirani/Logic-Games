@@ -216,9 +216,15 @@ while True:
         checkIfRowIsFull()
         moveTimer = -5
 
-        lineStanding = random.randint(0,1)
-        lineSleeping = random.randint(0,1)
-        if lineSleeping == 0:
+        veryTemp = random.randint(0,2)
+        if veryTemp == 0:
+            lineStanding = 1
+            lineSleeping = 0
+        elif veryTemp == 1:
+            lineStanding = 0
+            lineSleeping = 1
+        else:
+            lineSleeping = 1
             lineStanding = 1
 
         for stand in range(lineStanding+1):
