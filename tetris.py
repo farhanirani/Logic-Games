@@ -117,7 +117,7 @@ while True:
         incrementTimer = False
 
         if keys[pygame.K_LEFT] and keys[pygame.K_DOWN]:
-            if curCol > 0  and curRow+lineStanding  < 19 and board[curRow +1][curCol-1] != 1 and board[curRow +1][curCol+lineSleeping-1] != 1 and board[curRow+lineStanding +1][curCol-1] != 1 : # to move bottom left
+            if curCol > 0  and curRow+lineStanding  < 19 and board[curRow +1][curCol-1] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping-1] != 1 and board[curRow+lineStanding +1][curCol-1] != 1 and board[curRow][curCol-1] != 1 and board[curRow+lineStanding ][curCol-1] != 1: # to move bottom left
                 board[curRow][curCol] = 0
                 curCol -= 1
                 curRow += 1 
@@ -132,11 +132,11 @@ while True:
 
         
         elif keys[pygame.K_RIGHT] and keys[pygame.K_DOWN]:
-            if curCol+lineSleeping < 9 and curRow+lineStanding  < 19 and board[curRow+1][curCol+1] != 1 and board[curRow +1][curCol+lineSleeping +1] != 1 and  board[curRow+lineStanding +1][curCol+lineSleeping +1] != 1 :  #move bottom right
+            if curCol+lineSleeping < 9 and curRow+lineStanding  < 19 and board[curRow+lineStanding +1][curCol+1] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping +1] != 1 and  board[curRow+lineStanding +1][curCol+lineSleeping +1] != 1 and board[curRow][curCol+lineSleeping +1] != 1 and board[curRow+lineStanding][curCol+ lineSleeping+1] != 1 :  #move bottom right
                 board[curRow][curCol] = 0
                 curCol += 1
                 curRow += 1
-            elif curCol+lineSleeping < 9 and board[curRow][curCol+ lineSleeping+1] != 1 and board[curRow+lineStanding ][curCol+ lineSleeping+1] != 1 : # move right
+            elif curCol+lineSleeping < 9 and board[curRow][curCol+lineSleeping +1] != 1 and board[curRow+lineStanding][curCol+ lineSleeping+1] != 1 : # move right
                 board[curRow][curCol] = 0
                 curCol += 1
             elif curRow+lineStanding  < 19 and board[curRow+lineStanding +1][curCol] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping] != 1 : # to move down
@@ -171,7 +171,9 @@ while True:
 
     # #movement -------------------------------------------------------------------
 
-    
+    if incrementTimer and (curRow+lineStanding  >= 19 or board[curRow+lineStanding +1][curCol] == 1 or board[curRow+lineStanding +1][curCol+lineSleeping] == 1) :
+        isFalling = False
+        
     if isFalling and incrementTimer:
         if moveTimer == 5:
             curRow += 1
@@ -179,8 +181,7 @@ while True:
         else:
             moveTimer += 1
 
-    if incrementTimer and (curRow+lineStanding  >= 19 or board[curRow+lineStanding +1][curCol] == 1 or board[curRow+lineStanding +1][curCol+lineSleeping] == 1) :
-        isFalling = False
+    
     
 
     #set current position to 1
