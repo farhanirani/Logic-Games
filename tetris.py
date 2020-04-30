@@ -94,6 +94,11 @@ board = [[0 for col in range(10)] for row in range(20) ]
 #             for row in range(15,20):
 #                 board[row][col] = 1
 
+Ltrue = False
+Lrow = 0
+Lcol = 0
+eraseLhole = True
+
 font = pygame.font.SysFont('franklingothicheavy', 20)
 
 curCol = 4
@@ -116,8 +121,20 @@ while True:
                 pygame.quit()
                 exit()
             if event.key == K_UP and curCol != 9:
-                if lineSleeping == 1 or board[curRow][curCol+1] != 1:
+                if (lineSleeping == 1 and board[curRow+ 1 ] != 1) or (lineStanding == 1 and board[curRow][curCol+1] != 1):
                     lineSleeping, lineStanding = lineStanding, lineSleeping
+
+                    if Lrow == 0 :
+                        if Lcol == 0:
+                            Lcol = 1
+                        else:
+                            Lrow = 1
+                    else:
+                        if Lcol == 0:
+                            Lrow = 0
+                        else:
+                            Lcol = 0
+
     
     
     # #movement -------------------------------------------------------------------
@@ -181,15 +198,31 @@ while True:
 
     # #movement -------------------------------------------------------------------
 
-    if incrementTimer and (curRow+lineStanding  >= 19 or board[curRow+lineStanding +1][curCol] == 1 or board[curRow+lineStanding +1][curCol+lineSleeping] == 1) :
-        isFalling = False
+    # check if it should stop falling
+    if incrementTimer:
+        if Ltrue:
+            if Lrow == 1 and Lcol == 0:
+                if (curRow+lineStanding  >= 19 or board[curRow +1][curCol] == 1 or board[curRow + 2][curCol + 1] == 1) :
+                    isFalling = False
+            elif Lrow == 1 and Lcol == 1:
+                if (curRow+lineStanding  >= 19 or board[curRow + 2][curCol] == 1 or board[curRow + 1][curCol + 1] == 1) :
+                    isFalling = False
+            else:
+                if (curRow+lineStanding  >= 19 or board[curRow+lineStanding +1][curCol] == 1 or board[curRow+lineStanding +1][curCol+lineSleeping] == 1) :
+                    isFalling = False
+        else:
+            if (curRow+lineStanding  >= 19 or board[curRow+lineStanding +1][curCol] == 1 or board[curRow+lineStanding +1][curCol+lineSleeping] == 1) :
+                isFalling = False
         
+
     if isFalling and incrementTimer:
         if moveTimer == 5:
             curRow += 1
             moveTimer = 0
         else:
             moveTimer += 1
+    # elif not isFalling and Lrow == 1 and board[curRow + 2][curCol + Lcol] == 1:
+    #     eraseLhole = False
 
     
     
@@ -198,6 +231,8 @@ while True:
     for stand in range(lineStanding+1):
         for sleep in range(lineSleeping+1):
             board[curRow+ stand][curCol+ sleep] = 1
+    if Ltrue:# and eraseLhole:
+            board[curRow + Lrow][curCol + Lcol] = 0
     
     drawBoard()
 
@@ -216,24 +251,35 @@ while True:
         checkIfRowIsFull()
         moveTimer = -5
 
+        # set next shape
         veryTemp = random.randint(0,2)
-        if veryTemp == 0:
+        if veryTemp == 0: # for line
             lineStanding = 1
             lineSleeping = 0
-        elif veryTemp == 1:
-            lineStanding = 0
+            Ltrue = False
+        elif veryTemp == 1: # for L shape
+            lineStanding = 1 
             lineSleeping = 1
-        else:
+            Ltrue = True
+            eraseLhole = True
+            Lrow = random.randint(0,1)
+            Lcol = random.randint(0,1)
+        else:  # for square
             lineSleeping = 1
             lineStanding = 1
+            Ltrue = False
 
         for stand in range(lineStanding+1):
             for sleep in range(lineSleeping+1):
                 board[curRow+ stand][curCol+ sleep] = 1
+        if Ltrue:
+            board[curRow + Lrow][curCol + Lcol] = 0
 
-    else:
+    elif isFalling:
         for stand in range(lineStanding+1):
             for sleep in range(lineSleeping+1):
                 board[curRow+ stand][curCol+ sleep] = 0
+        if Ltrue:# and eraseLhole:
+            board[curRow + Lrow][curCol + Lcol] = 0
 
     mainClock.tick(10)
