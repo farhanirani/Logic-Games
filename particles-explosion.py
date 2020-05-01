@@ -10,15 +10,28 @@ screen = pygame.display.set_mode((1000, 800),0,32)
 particles = []
 
 #main game
-
+counter = 0
 while True:
     screen.fill((0,0,0))
     
     mx, my = pygame.mouse.get_pos()
+
+
     # mx = random.randint(400,600)
     # my = random.randint(400,600)
+
+    # counter += 1
+    # mx = 300
+    # my = 300
+    # if counter%4 == 1:
+    #     mx += 300
+    # elif counter%4 == 2:
+    #     mx += 300
+    #     my += 300
+    # elif counter%4 == 3:
+    #     my += 300
+        
     #                  spawn x,y                   speed x, speed y               life timer and radius                        
-    
     for _ in range(20):
         # particles.append([ [mx, my], [random.randint(0, 20) / 10 - 1, -2], random.randint(4,8)])
         particles.append([ [mx, my], [random.randint(-100, 100)/10 , random.randint(-100, 100)/10 ], random.randint(4,10), (0,0,(random.randint(1,255))) ])
