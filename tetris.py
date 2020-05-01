@@ -259,7 +259,7 @@ while True:
         moveTimer = -5
 
         # set next shape
-        veryTemp = 0
+        veryTemp = random.randint(0, 3)
         if veryTemp == 0: # for line
             lineStanding = 1
             lineSleeping = 0
