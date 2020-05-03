@@ -314,9 +314,9 @@ while True:
     #cactus
     if cactustimer == 0:
         cactusobjects.append( cactus() )
-        cactustimer = random.randint(30,200-cactusDecreaseInterval)
+        cactustimer = random.randint(30,160-cactusDecreaseInterval)
         if veryTempVar == 0:
-            if 200 - cactusDecreaseInterval > 100:
+            if 160 - cactusDecreaseInterval > 100:
                 cactusDecreaseInterval += 10
             veryTempVar = 4
         else:
@@ -356,7 +356,7 @@ while True:
                 for cac in cactusobjects:
                     if particle[0][0] + 40 > cac.x and particle[0][0] + 40 < cac.x+cac.IMG.get_size()[0]+50  and particle[0][1] > 310-cac.IMG.get_size()[1] and run == 1:
                         for i in range(int(cac.num * cac.IMG.get_size()[1]/10)):
-                            blastparticles.append([ [cac.x +( cac.IMG.get_size()[0] / 2), 310-cac.IMG.get_size()[1] +(cac.IMG.get_size()[1] / 2)], [random.randint(0, 10) , random.randint(0, 20) / 10 - 1], random.randint(4,8)])
+                            blastparticles.append([ [cac.x +( cac.IMG.get_size()[0] / 2), 310-cac.IMG.get_size()[1] +(cac.IMG.get_size()[1] / 2)], [random.randint(0, 100)/10 , random.randint(0, 100) / 50 - 1], random.randint(4,8)])
                         cactusobjects.remove(cac)
                         particles.remove(particle)
                         run = 0
