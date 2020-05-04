@@ -86,6 +86,37 @@ def drawBoard():
 
 
 
+def checkIMoveDOWNLEFT():
+    c = 0
+    for r in range(-1,2):
+        if not(c==Lcol and r==Lrow):
+            if board[curRow + r + 1][curCol + c - 1] == 1:
+                return 0
+    r = 1    
+    for c in range(2):
+        if not(c==Lcol and r==Lrow):
+            if board[curRow + r + 1][curCol + c] == 1:
+                return 0
+    if board[curRow + Lrow][curCol + Lcol] == 1:
+        return 0
+    return 1
+
+def checkIMoveDOWNRIGHT():
+    c = 1
+    for r in range(-1,2):
+        if not(c==Lcol and r==Lrow):
+            if board[curRow + r + 1][curCol + c + 1] == 1:
+                return 0
+    r = 1    
+    for c in range(2):
+        if not(c==Lcol and r==Lrow):
+            if board[curRow + r + 1][curCol + c] == 1:
+                return 0
+    if board[curRow + Lrow][curCol + Lcol] == 1:
+        return 0
+    return 1
+
+
 #main game
 
 board = [[0 for col in range(10)] for row in range(20) ]
@@ -145,24 +176,72 @@ while True:
         incrementTimer = False
 
         if keys[pygame.K_LEFT] and keys[pygame.K_DOWN] and not Ltrue:
-            if curCol > 0  and curRow+lineStanding  < 19 and board[curRow +1][curCol-1] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping-1] != 1 and board[curRow+lineStanding +1][curCol-1] != 1 and board[curRow][curCol-1] != 1 and board[curRow+lineStanding ][curCol-1] != 1: # to move bottom left
+            # to move bottom left
+            if curCol > 0  and curRow+lineStanding  < 19 and board[curRow +1][curCol-1] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping-1] != 1 and board[curRow+lineStanding +1][curCol-1] != 1 and board[curRow][curCol-1] != 1 and board[curRow+lineStanding ][curCol-1] != 1: 
                 curCol -= 1
                 curRow += 1 
-            elif curCol > 0 and board[curRow][curCol-1] != 1 and board[curRow+lineStanding ][curCol-1] != 1 : # to move left
+            # to move left
+            elif curCol > 0 and board[curRow][curCol-1] != 1 and board[curRow+lineStanding ][curCol-1] != 1 : 
                 curCol -= 1
+            # to move down
             elif curRow+lineStanding  < 19 and board[curRow+lineStanding +1][curCol] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping] != 1 : # to move down
+                curRow += 1
+            else:
+                incrementTimer = True
+        
+        # for L shape
+        elif keys[pygame.K_LEFT] and keys[pygame.K_DOWN] and Ltrue:
+            # to move bottom left
+            if curCol > 0  and curRow+lineStanding  < 19 and checkIMoveDOWNLEFT() == 1 :
+                curCol -= 1
+                curRow += 1 
+            # to move left
+            elif curCol > 0 and Lcol == 0 and board[curRow + (Lrow+1)%2][curCol-1] != 1 and board[curRow + Lrow][curCol] != 1 :
+                curCol -= 1
+            elif curCol > 0 and board[curRow][curCol-1] != 1 and board[curRow+1][curCol-1] != 1 :
+                curCol -= 1
+            # to move down
+            elif Lrow == 1 and Lcol == 0 and (not (curRow+lineStanding  >= 19 or board[curRow +1][curCol] == 1 or board[curRow + 2][curCol + 1] == 1)) : 
+                curRow += 1
+            elif Lrow == 1 and Lcol == 1 and (not (curRow+lineStanding  >= 19 or board[curRow + 2][curCol] == 1 or board[curRow + 1][curCol + 1] == 1)) :
+                curRow += 1
+            elif not (curRow+lineStanding  >= 19 or board[curRow+lineStanding +1][curCol] == 1 or board[curRow+lineStanding +1][curCol+lineSleeping] == 1) :
                 curRow += 1
             else:
                 incrementTimer = True
 
         
         elif keys[pygame.K_RIGHT] and keys[pygame.K_DOWN] and not Ltrue:
-            if curCol+lineSleeping < 9 and curRow+lineStanding  < 19 and board[curRow+lineStanding +1][curCol+1] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping +1] != 1 and  board[curRow+lineStanding +1][curCol+lineSleeping +1] != 1 and board[curRow][curCol+lineSleeping +1] != 1 and board[curRow+lineStanding][curCol+ lineSleeping+1] != 1 :  #move bottom right
+            #move bottom right
+            if curCol+lineSleeping < 9 and curRow+lineStanding  < 19 and board[curRow+lineStanding +1][curCol+1] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping +1] != 1 and  board[curRow+lineStanding +1][curCol+lineSleeping +1] != 1 and board[curRow][curCol+lineSleeping +1] != 1 and board[curRow+lineStanding][curCol+ lineSleeping+1] != 1 :
                 curCol += 1
                 curRow += 1
-            elif curCol+lineSleeping < 9 and board[curRow][curCol+lineSleeping +1] != 1 and board[curRow+lineStanding][curCol+ lineSleeping+1] != 1 : # move right
+            # move right
+            elif curCol+lineSleeping < 9 and board[curRow][curCol+lineSleeping +1] != 1 and board[curRow+lineStanding][curCol+ lineSleeping+1] != 1 : 
                 curCol += 1
-            elif curRow+lineStanding  < 19 and board[curRow+lineStanding +1][curCol] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping] != 1 : # to move down
+            # to move down
+            elif curRow+lineStanding  < 19 and board[curRow+lineStanding +1][curCol] != 1 and board[curRow+lineStanding +1][curCol+lineSleeping] != 1 :
+                curRow += 1
+            else:
+                incrementTimer = True
+
+        # for L shape
+        elif keys[pygame.K_RIGHT] and keys[pygame.K_DOWN] and Ltrue:
+            # move bottom right
+            if curCol+lineSleeping < 9 and curRow+lineStanding  < 19 and checkIMoveDOWNRIGHT() == 1 :
+                curCol += 1
+                curRow += 1
+            # move right
+            elif curCol+lineSleeping < 9 and Lcol == 1 and board[curRow + (Lrow+1)%2][curCol+2] != 1 and board[curRow + Lrow][curCol+1] != 1 :
+                curCol += 1
+            elif curCol+lineSleeping < 9 and board[curRow][curCol+2] != 1 and board[curRow+1][curCol+2] != 1 :
+                curCol += 1
+            # to move down
+            elif Lrow == 1 and Lcol == 0 and (not (curRow+lineStanding  >= 19 or board[curRow +1][curCol] == 1 or board[curRow + 2][curCol + 1] == 1)) : 
+                curRow += 1
+            elif Lrow == 1 and Lcol == 1 and (not (curRow+lineStanding  >= 19 or board[curRow + 2][curCol] == 1 or board[curRow + 1][curCol + 1] == 1)) :
+                curRow += 1
+            elif not (curRow+lineStanding  >= 19 or board[curRow+lineStanding +1][curCol] == 1 or board[curRow+lineStanding +1][curCol+lineSleeping] == 1) :
                 curRow += 1
             else:
                 incrementTimer = True
@@ -231,7 +310,10 @@ while True:
         else:
             if (curRow+lineStanding  >= 19 or board[curRow+lineStanding +1][curCol] == 1 or board[curRow+lineStanding +1][curCol+lineSleeping] == 1) :
                 isFalling = False
-        
+    if Ltrue:
+        if Lrow==1 and board[curRow + Lrow][curCol + Lcol] == 1:
+            isFalling = False
+
 
     # if its falling normally check if you can increase curRow
     if isFalling and incrementTimer:
