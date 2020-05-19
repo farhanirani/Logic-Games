@@ -58,19 +58,9 @@ class foood:
         pygame.draw.rect(screen, (255,0,0), ( (self.x)*(600/rows)+2, (self.y)*(600/columns)+2, (600/columns)-4, (600/rows)-4 ))
 
 
-# def drawBoard():
-#     global rows
-#     global columns
-#     for i in range(rows):
-#         pygame.draw.line(screen, (110, 73, 13), ((i+1)*(600/rows), 0), ((i+1)*(600/rows), 600), 1)
-#     for i in range(columns):
-#         pygame.draw.line(screen, (110, 73, 13), (0, (i+1)*(600/rows)), (600, (i+1)*(600/rows)), 1)
-
-
 def gameover():
     font = pygame.font.SysFont('franklingothicheavy', 60)
     text = font.render('GAME OVER ', 1, (255,0,0))
-    # drawBoard()
     screen.blit(text, (100,210))
     pygame.display.update()
     i = 0
@@ -97,8 +87,6 @@ def redraw():
         b.direction = int(nextdirection)
         b.draw()
         nextdirection = int(temp)
-
-    # drawBoard()
     pygame.display.update()
 
 
