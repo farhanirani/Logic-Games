@@ -1,8 +1,9 @@
 import pygame,os,random
+from pygame.locals import *
 pygame.init()
 os.chdir("files/snakegamefiles")
 
-screen = pygame.display.set_mode((500,500))
+screen = pygame.display.set_mode((600,600))
 pygame.display.set_caption("snake game")
 clock = pygame.time.Clock()
 snakeimg = pygame.image.load("snake.png")
@@ -15,17 +16,17 @@ class snakehead:
         self.y = y
 
     def draw(self):
-        if self.x < columns-1 and gdirection == 1:
-            self.x += 1
-        elif self.y < rows-1 and gdirection == 2:
-            self.y += 1
-        elif self.x > 0 and gdirection == 3:
-            self.x -= 1
-        elif self.y > 0 and gdirection == 4:
-            self.y -= 1
+        if gdirection == 1:
+            self.x = (self.x + 1) % columns
+        elif gdirection == 2:
+            self.y = (self.y + 1) % columns
+        elif gdirection == 3:
+            self.x = (self.x - 1) % columns
+        elif gdirection == 4:
+            self.y = (self.y - 1) % columns
         else:
             gameover()
-        pygame.draw.rect(screen, (8, 115, 20), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
+        pygame.draw.rect(screen, (0, 255, 0), ( (self.x)*(600/rows), (self.y)*(600/columns), (600/columns), (600/rows) ))
 
 
 class snakebody:
@@ -35,17 +36,17 @@ class snakebody:
         self.direction = directiond
     
     def draw(self):
-        if self.x < columns-1 and self.direction == 1:
-            self.x += 1
-        elif self.y < rows-1 and self.direction == 2:
-            self.y += 1
-        elif self.x > 0 and self.direction == 3:
-            self.x -= 1
-        elif self.y > 0 and self.direction == 4:
-            self.y -= 1
+        if self.direction == 1:
+            self.x = (self.x + 1) % columns
+        elif self.direction == 2:
+            self.y = (self.y + 1) % columns
+        elif self.direction == 3:
+            self.x = (self.x - 1) % columns
+        elif self.direction == 4:
+            self.y = (self.y - 1) % columns
         else:
             gameover()
-        pygame.draw.rect(screen, (0,0,0), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
+        pygame.draw.rect(screen, (0,150,0), ( (self.x)*(600/rows)+2, (self.y)*(600/columns)+2, (600/columns)-4, (600/rows)-4 ))
 
 
 class foood:
@@ -54,22 +55,22 @@ class foood:
         self.y = y
 
     def draw(self):
-        pygame.draw.rect(screen, (255,0,0), ( (self.x)*(500/rows), (self.y)*(500/columns), (500/columns), (500/rows) ))
+        pygame.draw.rect(screen, (255,0,0), ( (self.x)*(600/rows)+2, (self.y)*(600/columns)+2, (600/columns)-4, (600/rows)-4 ))
 
 
-def drawBoard():
-    global rows
-    global columns
-    for i in range(rows):
-        pygame.draw.line(screen, (110, 73, 13), ((i+1)*(500/rows), 0), ((i+1)*(500/rows), 500), 1)
-    for i in range(columns):
-        pygame.draw.line(screen, (110, 73, 13), (0, (i+1)*(500/rows)), (500, (i+1)*(500/rows)), 1)
+# def drawBoard():
+#     global rows
+#     global columns
+#     for i in range(rows):
+#         pygame.draw.line(screen, (110, 73, 13), ((i+1)*(600/rows), 0), ((i+1)*(600/rows), 600), 1)
+#     for i in range(columns):
+#         pygame.draw.line(screen, (110, 73, 13), (0, (i+1)*(600/rows)), (600, (i+1)*(600/rows)), 1)
 
 
 def gameover():
     font = pygame.font.SysFont('franklingothicheavy', 60)
     text = font.render('GAME OVER ', 1, (255,0,0))
-    drawBoard()
+    # drawBoard()
     screen.blit(text, (100,210))
     pygame.display.update()
     i = 0
@@ -86,7 +87,7 @@ def gameover():
 
 
 def redraw():
-    screen.fill((100,10,10))
+    screen.fill((0,0,0))
     food.draw()
     snake.draw()
 
@@ -97,7 +98,7 @@ def redraw():
         b.draw()
         nextdirection = int(temp)
 
-    drawBoard()
+    # drawBoard()
     pygame.display.update()
 
 
@@ -117,11 +118,16 @@ food = foood(random.randint(0, rows-1), random.randint(0, columns-1))
 
 
 while True:
-    clock.tick(10)
+    clock.tick(16)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                pygame.quit()
+                exit()
+        
 
     keys = pygame.key.get_pressed()
 
