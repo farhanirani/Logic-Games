@@ -100,8 +100,8 @@ gdirection = 1
 appendflag = 0
 
 snake = snakehead(2,10)
-rows = 24
-columns = 24
+rows = 22
+columns = 22
 food = foood(random.randint(0, rows-1), random.randint(0, columns-1))
 
 
