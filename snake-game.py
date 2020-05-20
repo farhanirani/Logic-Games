@@ -106,7 +106,7 @@ food = foood(random.randint(0, rows-1), random.randint(0, columns-1))
 
 
 while True:
-    clock.tick(16)
+    clock.tick(15)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
