@@ -5,7 +5,7 @@ Games made entirely using my logic. Games inspired by retro games such as Space 
 ## Requirements :
 
 - [Python3](https://www.python.org/downloads/)
-- [pygame](https://www.pygame.org/wiki/GettingStarted)
+- [Pygame](https://www.pygame.org/wiki/GettingStarted)
 
 ## Games :
 
@@ -28,4 +28,4 @@ Enemies keep advancing towards you. Can you shoot them down to stay alive?? You 
 
 ### Tetris
 
-A 3 unique block tetris.
+A 3 unique block game of tetris.
