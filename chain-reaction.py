@@ -121,7 +121,7 @@ def redraw():
 
 
 def decoration():
-    font = pygame.font.SysFont('franklingothicheavy', 30)
+    font = pygame.font.SysFont('franklingothicheavy', 40)
     p = [0,0,0]
     for i in range(sizeofboard):
         for j in range(sizeofboard):
@@ -157,7 +157,7 @@ def delayy():
     
 # main game
 
-sizeofboard = 12
+sizeofboard = 10
 board = [[ball(i,j,0,0) for i in range(sizeofboard)] for j in range(sizeofboard) ]
 playernumber = 0
 

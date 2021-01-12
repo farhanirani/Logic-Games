@@ -97,6 +97,16 @@ def redraw():
 def lifeHit():
     global lives
     global alienspeed
+    font = pygame.font.SysFont('franklingothicheavy', 40)
+    tt = str(lives-1) + " lives left"
+    text = font.render(tt, 1, (255,0,0))
+    screen.blit(text, (180,150))
+    pygame.display.update()
+    i=0
+    while i < 150:
+        pygame.time.delay(10)
+        i+=1
+
     if lives > 1:
         lives -= 1
         aliens.clear()
