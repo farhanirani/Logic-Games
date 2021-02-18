@@ -1,5 +1,5 @@
 import pygame, os, random
-os.chdir('tapballfiles')
+os.chdir("files/tapballfiles")
 pygame.init()  
 
 screen = pygame.display.set_mode((800,600))

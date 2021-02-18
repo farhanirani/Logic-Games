@@ -1,40 +1,41 @@
 import pygame, sys, random
 from pygame.locals import *
 pygame.init()
-pygame.mouse.set_visible(False)
 
 mainClock = pygame.time.Clock()
 pygame.display.set_caption("particle-explosion")
 screen = pygame.display.set_mode((1000, 800),0,32)
 
 particles = []
+x_vel = 7
+y_vel = 7
+mx = 130
+my = 300
 
 #main game
 counter = 0
 while True:
     screen.fill((0,0,0))
     
+    # 1st method
     mx, my = pygame.mouse.get_pos()
 
+    # 2nd method
+    # mx = random.randint(200,600)
+    # my = random.randint(200,600)
 
-    # mx = random.randint(400,600)
-    # my = random.randint(400,600)
+    # 3rd method
+    # if mx < 0 or mx > 1000:
+    #     x_vel *= -1 
+    # if my < 0 or my > 800:
+    #     y_vel *= -1 
+    # mx+=x_vel
+    # my+=y_vel
 
-    # counter += 1
-    # mx = 300
-    # my = 300
-    # if counter%4 == 1:
-    #     mx += 300
-    # elif counter%4 == 2:
-    #     mx += 300
-    #     my += 300
-    # elif counter%4 == 3:
-    #     my += 300
-        
     #                  spawn x,y                   speed x, speed y               life timer and radius                        
     for _ in range(20):
         # particles.append([ [mx, my], [random.randint(0, 20) / 10 - 1, -2], random.randint(4,8)])
-        particles.append([ [mx, my], [random.randint(-100, 100)/10 , random.randint(-100, 100)/10 ], random.randint(4,10), (0,0,(random.randint(1,255))) ])
+        particles.append([ [mx, my], [random.randint(-100, 100)/10 , random.randint(-100, 100)/10 ], random.randint(4,10), ((random.randint(100,255)),(random.randint(10,80)),(random.randint(1,13))) ])
 
     for particle in particles:
         particle[0][0] += particle[1][0]
