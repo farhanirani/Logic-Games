@@ -11,7 +11,7 @@ Games made entirely using my logic. Games inspired by retro games such as Space 
 
 ### Dino
 
-You are a dinosaur who needs to hates running into cactus. Press space to jump over them.
+You are a dinosaur who to hates running into cactus. Press space to jump over them.
 However you are a dinosaur who has a degree in Mechanical Engineering. You have built yourself a <b>gun</b> which you can shoot down the cactus. To reload you need to keep ducking(arrow down key).
 
 ### Chain Reaction
@@ -20,7 +20,7 @@ The classic Chain Reaction game. Keep filling up a slot untill it explodes in al
 
 ### Snake
 
-Keep eating the green square to grow longer. The longer you grow, the stronger you become. Be careful, sometimes becoming too big can destroy someone!
+Keep eating the red square to grow longer. The more you eat, the longer you grow. Be careful, sometimes becoming too big can destroy someone!
 
 ### Space Invaders
 
